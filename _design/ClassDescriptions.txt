@@ -1,0 +1,98 @@
+Brainstorming how it's all going to fit together. 
+I'll probably toss a lot of this as I get into coding but this helps me think about the problem.
+
+
+Code loader
+Encapsulates code input.
+
+This could be from a file, a webpage, a database, etc.
+
+
+BasicRobot
+Defines the minimum objects a robot should have.
+
+For instance it should have a motor, a scanner, a weapon, and a shield
+
+
+BasicObject?
+Should I define a basic object or objects like weapons, motors, scanners, or just a basic object that can interact with the world.
+
+It could have properties like x,y... that couples it to the Area though doesn't it?
+
+
+RobotSpecs
+A model that describes how many points are assigned to each component of a robot.
+
+Does this even need to be a class? It's basically just an array. Maybe this can encapsulate how to read that using given Data API.
+
+
+RobotRules
+This model defines how many points mean what in a RobotSpec.
+
+For instance how much damage a Laser set to 8 does or how much damage a shield set to 4 mitigates. This is how the game will be balanced.
+
+
+Code parser/DSL
+Handles converting raw bot code into runnable code.
+
+
+Code runner
+Runs the code in a safe manner.
+
+This will most likely be by containing it in a tread with $SAFE = 4.
+
+
+Communication Layer
+Sends messages back and forth between the arena and the code runner.
+
+This could be as simply as wiring up the receive to the transmit and vice versa for local running to a web based interface using Sinatra.
+It should handle communication from multiple clients securely (a bot shouldn't be able to lie about who it is)
+
+
+BotController
+This controller is the glue that pushes all the buttons of the classes needed to make a bot run like: Code loader, Code parser, a communication layer, and the code runner.
+
+
+ArenaController
+Orchestrates all the classes needed to make combat work like Layouts, Arena and Bot Rules, and ScoreKeeping.
+
+
+ArenaLayout
+The model that describes what an arena looks like.
+
+How long and wide it is and where obstacles are.
+
+
+ArenaRules
+A model that contains rules for battles.
+
+This could be things like how many battles to fight, the maximum number of points allowed for a bot, time limits, etc.
+
+
+ScoreKeeping
+Stores the results of battles.
+
+
+Data API
+Basic interface to datastores.
+
+This could be a JSON or YAML file or a database. This should be injected into a model so the model knows how to read data.
+
+
+Config
+Bootstraps the basic configuration for the ApplicationController.
+
+This might contain server locations, DataAPI types, and communication layer types. 
+
+
+Application Controller
+This is what orchestrates all the other classes into a usable application.
+
+This could be a CLI 'bot developer client or server or it could decide what it is by the way you run it. It could run a GUI.
+
+
+BattleView
+Displays information about a running battle and its results.
+
+
+
