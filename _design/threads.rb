@@ -15,10 +15,10 @@ end
 class Resource
   @mutex = Mutex.new
 
-  def self.do(count, time, priority=0)
+  def self.do(count, time)
     tputs "do: #{count}"
     count.times do |index|
-      self.use(count, time, index, priority, Time.now)
+      self.use(count, time, index)
     end
   end
 
@@ -28,7 +28,7 @@ class Resource
       sleep(0.01) while Time.now < timeout
       tputs "#{index} for count: #{count}"
     end
-    # This sleep seems to be crucial. The mutex is unlocked but if I
+    # This sleep seems to be crucial. The mutex is released but if I
     # don't have a sleep here the next thing waiting for the mutex 
     # doesn't seem to get the resource.
     sleep(0.001)

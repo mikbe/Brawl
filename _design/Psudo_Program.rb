@@ -7,7 +7,7 @@
 # A basic bot might be allowed 10 points to allocate. The more points the better the system of course.
 # 
 
-# This defines your robot's caracteristics
+# This defines your robot's characteristics
 Bot.build
   {
     # required
@@ -31,7 +31,6 @@ event :enemy_lost
 # (loop creates a thread)
 @contact = nil
 Scanner.loop do
-
   # try to keep the scanner locked on the enemy
   if @contact and @contact.is_enemy?
     direction, sweep, range = contact.direction - 5, 10, @contact.range + 2
@@ -47,8 +46,9 @@ end
 Scanner.loop do
   if check_for_walls(:front)
     [:left, :right].each do |direction|
-      @walls[direction] = 
+      @walls[direction] = check_for_walls(direction)
     end
+  end 
   fire_event(:wall)
 end
 
@@ -57,8 +57,13 @@ def check_for_walls(direction)
   !Scanner.scan direction: direction, sweep: 1, range: Motor.speed
 end
 
+Scanner.loop do
+
+end
+
 # Another low priority thread that moves the bot around randomly
 Motor.loop do
+
   if Motor.dead_end
     reverse
     Motor.dead_end = false
@@ -71,6 +76,7 @@ Motor.loop do
       Motor.dead_end = random_turn
     end
   end
+
 end
 
 def random_turn
@@ -83,7 +89,6 @@ def random_turn
   end
   !directions.is_empty?
 end
-
 
 # This does not create a thread/loop but instead dynamcially creates a method using the given block
 # You can call it whatever you want as long as you don't pick something that's already taken.
