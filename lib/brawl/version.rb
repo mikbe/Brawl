@@ -1,3 +1,3 @@
 module Brawl
-  VERSION = "0.0.0.alpha"
+  VERSION = "0.0.0"
 end

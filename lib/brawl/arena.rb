@@ -1,0 +1,13 @@
+module Brawl
+  
+  class Arena
+    
+    attr_reader :width, :height
+    
+    def initialize(args)
+      args.each {|key, value| instance_variable_set "@#{key}", value}
+    end
+    
+  end
+  
+end

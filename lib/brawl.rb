@@ -1,5 +1,5 @@
 require "brawl/version"
 
-module Brawl
-  # Your code goes here...
-end
+require "brawl/arena"
+require "brawl/scanner"
+require "brawl/bot"

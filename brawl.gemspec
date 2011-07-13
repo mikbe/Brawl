@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = %q{nothing to see here, move along}
 
   s.rubyforge_project = "brawl"
+  s.add_development_dependency "fakefs"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
