@@ -4,7 +4,7 @@ module Brawl
   class BasicScanner
     include HashableProperties
 
-    attr_reader :range, :max_sweep, :bot
+    attr_reader :range, :max_angle, :bot
 
     DECIMAL_PLACES  = 1
     
@@ -12,49 +12,48 @@ module Brawl
       set_properties(args)
     end
 
-    # Scans shouldn't be super accurate math based, looking at exact locations,
-    # but instead a scan should use a pixelated triangle so if a "pixel" is 
-    # inside the triangle of the scan then the whole pixel is part of the scan.
-    # Pixels equate to a 1x1 block on the map.
-    # 
-    # Wider scans should take longer, figure that out when you get to running bots together
     def scan(args={})
-      sweep       = [@max_sweep, args[:sweep] ||= @max_sweep].min
-      scan_points = pixelated_cone( sweep: sweep, 
-                                        heading: bot.heading, 
-                                        x: bot.position[:x], 
-                                        y: bot.position[:y]
-                                      )
+      angle       = [@max_angle, args[:angle] ||= @max_angle].min
+      direction   = args[:direction]
       
       enemy_points = bot.arena.bots.collect do |bot| 
-        {x: bot.position[:x].floor, y: bot.position[:y].floor} unless 
-          bot.position == @bot.position
+        {x: bot.position[:x].floor, y: bot.position[:y].floor} unless bot.position == @bot.position
       end.compact
 
       wall_points = points_surrounding_rectangle(bot.arena.width, bot.arena.height)
-      
-      found_points = (wall_points & scan_points).collect{|point| {type: :wall}.merge(point)}
-      found_points += (enemy_points & scan_points).collect{|point| {type: :enemy}.merge(point)}
+
+      cone = {origin: bot.position, direction: direction, radius: @range, angle: angle}
+
+      {wall: wall_points, enemy: enemy_points}.collect do |type, point_set|
+        point_set.collect do |point|
+          {type: type}.merge(point) if point_in_cone?({point: point}.merge(cone))
+        end.compact
+      end.flatten
     end
   
     private
     
-    # This will be needed by the weapon
-    def pixelated_cone(args)
-      sweep, heading, x, y = args[:sweep], args[:heading], args[:x], args[:y]
-      scan_points = []
-      sweep.times do |angle|
-        radian = (Math::PI / 180) * ((angle - (sweep / 2)) + heading)
-        (@range+1).times do |distance|
-          scan_points << {
-            x:  (x + (Math.sin(radian).round(DECIMAL_PLACES) * distance)).floor,
-            y:  (y + (Math.cos(radian).round(DECIMAL_PLACES) * distance)).floor
-          }
-        end
+    def point_in_cone?(args)
+      radius, angle, direction, origin, point = args[:radius], args[:angle], args[:direction], args[:origin], args[:point]
+      x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
+      
+      # Measure if the distance between origin and the target is <= to the scan range,
+      distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+      return false if distance > radius
+
+      heading_to_target = Math.atan2(x2 - x1, y2 - y1)
+
+      min_cone_angle = (Math::PI / 180) * ((direction - (angle / 2)) % 360)
+      max_cone_angle = (Math::PI / 180) * ((direction + (angle / 2)) % 360)
+
+      # Now check if the ray from the origin to the target is inside the scan angle.
+      if min_cone_angle > max_cone_angle
+        heading_to_target >= min_cone_angle || heading_to_target <= max_cone_angle
+      else
+        heading_to_target >= min_cone_angle && heading_to_target <= max_cone_angle
       end
-      scan_points.uniq
     end
-    
+
     def points_surrounding_rectangle(width, height)
       points = []
       #left and right

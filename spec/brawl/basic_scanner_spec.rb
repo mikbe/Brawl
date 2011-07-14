@@ -4,14 +4,14 @@ describe Brawl::BasicScanner do
     
   let(:bot) {double("Brawl::BasicBot")}
   let(:arena) {double("Brawl::Arena")}
-  let(:scanner) {Brawl::BasicScanner.new(range: 10, max_sweep: 180, bot: bot)}
+  let(:scanner) {Brawl::BasicScanner.new(range: 10, max_angle: 180, bot: bot)}
   
   it "should have a range property" do
     scanner.should respond_to(:range)
   end
   
   it "should have a max sweep property" do
-    scanner.should respond_to(:max_sweep)
+    scanner.should respond_to(:max_angle)
   end
 
   it "should have a reference to its parent bot" do
@@ -36,47 +36,47 @@ describe Brawl::BasicScanner do
     end
   
     it "should return an empty array of contacts if nothing is in range" do
-      scanner = Brawl::BasicScanner.new(range: 1, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 0, sweep: 1).should be_empty
+      scanner = Brawl::BasicScanner.new(range: 1, max_angle: 180, bot: bot)
+      scanner.scan(direction: 0, angle: 1).should be_empty
     end
       
     it "should find walls if in range" do
-      scanner = Brawl::BasicScanner.new(range: 6, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 0, sweep: 1).should_not be_empty
+      scanner = Brawl::BasicScanner.new(range: 6, max_angle: 180, bot: bot)
+      scanner.scan(direction: 0, angle: 1).should_not be_empty
     end
     
     it "should find a wall type contact if in range" do
-      scanner.scan(angle: 0, sweep: 1).any?{|contact| contact[:type] == :wall}.should be_true
+      scanner.scan(direction: 0, angle: 1).any?{|contact| contact[:type] == :wall}.should be_true
     end
     
     it "should find enemies if in range" do
       enemy = double("Brawl::BasicBot")
       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
       arena.stub!(:bots).and_return([bot, enemy])
-      scanner = Brawl::BasicScanner.new(range: 3, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 0, sweep: 1).any?{|contact| contact[:type] == :enemy}.should be_true
+      scanner = Brawl::BasicScanner.new(range: 3, max_angle: 180, bot: bot)
+      scanner.scan(direction: 0, angle: 1).any?{|contact| contact[:type] == :enemy}.should be_true
     end  
     
     it "should not find enemies if out of range" do
       enemy = double("Brawl::BasicBot")
       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
       arena.stub!(:bots).and_return([bot, enemy])
-      scanner = Brawl::BasicScanner.new(range: 1, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 0, sweep: 1).should be_empty
+      scanner = Brawl::BasicScanner.new(range: 1, max_angle: 180, bot: bot)
+      scanner.scan(direction: 0, angle: 1).should be_empty
     end  
     
     it "should find enemies to the side with a wide scan" do
-      arena.stub!(:width).and_return(50)
-      arena.stub!(:height).and_return(50)
+      arena.stub!(:width).and_return(100)
+      arena.stub!(:height).and_return(100)
       bot.stub!(:arena).and_return(arena)
       bot.stub!(:position).and_return({x: 20.0, y: 20.0})
-      bot.stub!(:heading).and_return(0)
+      bot.stub!(:heading).and_return(45)
       arena.stub!(:bots).and_return([bot])
       enemy = double("Brawl::BasicBot")
       enemy.stub!(:position).and_return({x: 18.0, y: 20.0})
       arena.stub!(:bots).and_return([bot, enemy])
-      scanner = Brawl::BasicScanner.new(range: 20, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 0, sweep: 180).any?{|contact| contact[:type] == :enemy}.should be_true
+      scanner = Brawl::BasicScanner.new(range: 20, max_angle: 360, bot: bot)
+      scanner.scan(direction: 0, angle: 180).any?{|contact| contact[:type] == :enemy}.should be_true
     end  
     
     it "should find enemies on an oblique" do
@@ -89,8 +89,8 @@ describe Brawl::BasicScanner do
       enemy = double("Brawl::BasicBot")
       enemy.stub!(:position).and_return({x: 35.0, y: 35.0})
       arena.stub!(:bots).and_return([bot, enemy])
-      scanner = Brawl::BasicScanner.new(range: 25, max_sweep: 180, bot: bot)
-      scanner.scan(angle: 45, sweep: 45).any?{|contact| contact[:type] == :enemy}.should be_true
+      scanner = Brawl::BasicScanner.new(range: 25, max_angle: 180, bot: bot)
+      scanner.scan(direction: 45, angle: 45).any?{|contact| contact[:type] == :enemy}.should be_true
     end  
 
   end
