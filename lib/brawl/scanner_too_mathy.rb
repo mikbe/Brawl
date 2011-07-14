@@ -1,13 +1,14 @@
 require 'set'
 
 module Brawl
-  class Scanner
-    DECIMAL_PLACES  = 5
-
+  class BasicScanner
+    include HashableProperties
+    
     attr_reader :range, :max_sweep, :bot
+    DECIMAL_PLACES  = 5
     
     def initialize(args={})
-      args.each {|key, value| instance_variable_set "@#{key}", value}
+      set_properties(args)
     end
 
     # this needs some serious work but, "First make it work, then make it fast."

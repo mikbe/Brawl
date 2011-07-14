@@ -1,4 +1,4 @@
-class Bot
+class BasicBot
   
 end
 

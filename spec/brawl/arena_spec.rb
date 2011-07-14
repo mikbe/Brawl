@@ -6,5 +6,4 @@ describe Brawl::Arena do
     Brawl::Arena.new(height: 100).height.should == 100
   end
 
-
 end

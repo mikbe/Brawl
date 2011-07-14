@@ -1,19 +1,31 @@
 require 'spec_helper'
 
-describe Brawl::Bot do
+describe Brawl::BasicBot do
     
   let(:arena) {double("Brawl::Arena")}
-  let(:bot) {Brawl::Bot.new position: {x: 0.0, y: 0.0}, heading: 0}
+  let(:bot) {Brawl::BasicBot.new position: {x: 0.0, y: 0.0}, heading: 0, arena: arena}
   
-  it "should know its position" do
-    expect{bot.position}.should_not raise_exception
+  context "when initializing" do
+  
+    it "should initialize properties using a hash" do
+      Brawl::BasicBot.new(position: {x: 10.0, y: 10.0}, heading: 50).position.should == {x: 10.0, y: 10.0}
+    end
+  
+    # this is how I intend to add features like different weapons and whatnot
+    it "should have the methods of the parts that are injected into it" do
+      scanner = double("Brawl::BasicScanner")
+      scanner.stub!("scantastic!")
+      bot = Brawl::BasicBot.new(position: {x: 0.0, y: 0.0}, heading: 0, arena: arena, parts:{scanner: scanner})
+      bot.should respond_to(:scantastic!)
+    end
+  
   end
   
-  it "should initizlize properties using a hash" do
-    Brawl::Bot.new(position: {x: 10.0, y: 10.0}, heading: 50).position.should == {x: 10.0, y: 10.0}
-  end
+  context "when moving" do
   
-  context "When moving" do
+    it "should know its position" do
+      expect{bot.position}.should_not raise_exception
+    end
 
     it "should move forward one space" do
       expect{bot.move}.should change(bot, :position).
@@ -39,7 +51,7 @@ describe Brawl::Bot do
   
   context "when turning" do
      
-    context "and giving an angle" do
+    context "and given an angle" do
       
       it "should turn to the angle specified" do
         expect{bot.turn to_angle: 45}.should change(bot, :heading).
@@ -69,7 +81,7 @@ describe Brawl::Bot do
       end
     end
 
-    context "and giving a degree" do
+    context "and given a degree" do
       
       it "should 'wrap-around' degrees given" do
         expect{bot.turn by_degrees: 390}.should change(bot, :heading).
@@ -104,7 +116,6 @@ describe Brawl::Bot do
           from(0).
           to(180)
       end
-
       
     end
     

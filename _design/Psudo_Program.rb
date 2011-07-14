@@ -30,7 +30,7 @@ event :enemy_lost
 # This loop looks for an enemy and tries to track it
 # (loop creates a thread)
 @contact = nil
-Scanner.loop do
+BasicScanner.loop do
   # try to keep the scanner locked on the enemy
   if @contact and @contact.is_enemy?
     direction, sweep, range = contact.direction - 5, 10, @contact.range + 2
@@ -43,7 +43,7 @@ Scanner.loop do
 end
 
 # Another scanner thread that is a lot faster and just looks for walls
-Scanner.loop do
+BasicScanner.loop do
   if check_for_walls(:front)
     [:left, :right].each do |direction|
       @walls[direction] = check_for_walls(direction)
@@ -54,10 +54,10 @@ end
 
 def check_for_walls(direction)
   # This is a really fast scan because it's scanning the minimum distance at only 1 degree
-  !Scanner.scan direction: direction, sweep: 1, range: Motor.speed
+  !BasicScanner.scan direction: direction, sweep: 1, range: Motor.speed
 end
 
-Scanner.loop do
+BasicScanner.loop do
 
 end
 
@@ -101,7 +101,7 @@ Laser.engage do |contact|
   aim contact.direction
 
   # Since aim is a non-blocking call you might not actually be pointed at the enemy yet
-  fire if contact.distance <= Laser.range and Scanner.scan direction: contact.direction, sweep: 3, range: contact.distance, priority: 5
+  fire if contact.distance <= Laser.range and BasicScanner.scan direction: contact.direction, sweep: 3, range: contact.distance, priority: 5
 end
 
 # Again this method is created dynamically using the given block

@@ -1,14 +1,25 @@
+require 'forwardable'
+
 module Brawl
   
-  class Bot
+  class BasicBot
+    extend Forwardable
+    include HashableProperties
+    
+    attr_reader :position, :heading, :arena, :parts
+
     DECIMAL_PLACES  = 1
     
-    attr_reader :position, :heading, :arena
-    
     def initialize(args={})
-
-      args.each {|key, value| instance_variable_set "@#{key}", value}      
-
+      set_properties(args)
+      
+      # Add parts's methods to the bot class dynamically
+      # makes it super easy to extend the bot with new parts!
+      @parts.each do |part, instance|
+        instance_variable_set("@#{part}", instance)
+        self.class.def_delegators "@#{part}", *(instance.public_methods(false))
+      end if @parts
+    
     end
     
     # movement
@@ -43,12 +54,6 @@ module Brawl
     def turn_by(degrees)
       @heading += degrees
       @heading %= 360
-    end
-    
-    # scanning
-    
-    def scan(args)
-      []
     end
     
   end
