@@ -37,7 +37,7 @@ module Brawl
       radius, angle, direction, origin, point = args[:radius], args[:angle], args[:direction], args[:origin], args[:point]
       x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
       
-      # Measure if the distance between origin and the target is <= to the scan range,
+      # Is the distance between the origin and the target is <= to the scan range?
       distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
       return false if distance > radius
 
