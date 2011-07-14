@@ -3,8 +3,20 @@ require 'spec_helper'
 describe Brawl::BasicWeapon do
     
   let(:bot) {double("Brawl::BasicBot")}
+  let(:enemy) {double("Brawl::BasicBot")}
   let(:arena) {double("Brawl::Arena")}
-  let(:weapon) {Brawl::BasicWeapon.new}
+  let(:weapon) {Brawl::BasicWeapon.new(range: 2, power: 1, bot: bot)}
+
+  before(:each) do
+    arena.stub!(:width).and_return(10)
+    arena.stub!(:height).and_return(10)
+    bot.stub!(:arena).and_return(arena)
+    bot.stub!(:position).and_return({x: 5.0, y: 0.0})
+    bot.stub!(:heading).and_return(0)
+    enemy = double("Brawl::BasicBot")
+    enemy.stub!(:position).and_return({x: 5.0, y: 1.0})
+    arena.stub!(:bots).and_return([bot, enemy])
+  end
   
   it "should have a range property" do
     weapon.should respond_to(:range)
@@ -53,7 +65,17 @@ describe Brawl::BasicWeapon do
     end
     
     it "should return true if it hits an enemy" do
-      
+      bot.stub!(:position).and_return({x: 5.0, y: 0.0})
+      bot.stub!(:heading).and_return(0)
+      enemy.stub!(:position).and_return({x: 5.0, y: 1.0})
+      weapon.fire(at: 0).should be_true
+    end
+    
+    it "should return false if it doesn't hit an enemy" do
+      bot.stub!(:position).and_return({x: 5.0, y: 0.0})
+      bot.stub!(:heading).and_return(0)
+      enemy.stub!(:position).and_return({x: 5.0, y: 1.0})
+      weapon.fire(at: 90).should be_false
     end
     
   end

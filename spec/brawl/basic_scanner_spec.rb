@@ -70,10 +70,10 @@ describe Brawl::BasicScanner do
       arena.stub!(:height).and_return(100)
       bot.stub!(:arena).and_return(arena)
       bot.stub!(:position).and_return({x: 20.0, y: 20.0})
-      bot.stub!(:heading).and_return(45)
+      bot.stub!(:heading).and_return(0)
       arena.stub!(:bots).and_return([bot])
       enemy = double("Brawl::BasicBot")
-      enemy.stub!(:position).and_return({x: 18.0, y: 20.0})
+      enemy.stub!(:position).and_return({x: 10.0, y: 20.0})
       arena.stub!(:bots).and_return([bot, enemy])
       scanner = Brawl::BasicScanner.new(range: 20, max_angle: 360, bot: bot)
       scanner.scan(direction: 0, angle: 180).any?{|contact| contact[:type] == :enemy}.should be_true
