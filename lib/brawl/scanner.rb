@@ -10,40 +10,40 @@ module Brawl
       args.each {|key, value| instance_variable_set "@#{key}", value}
     end
 
-    # this needs some serious work but, "First make it work, then make it fast."
+    # Scan shouldn't be a realistic math based scan looking at exact locations
+    # It should create a pixelated triangle where if a pixel is
+    # inside the triangle of the scan then the whole pixel is scanned.
     def scan(args={})
-      
       sweep       = [@max_sweep, args[:sweep] ||= @max_sweep].min
       scan_points = Set.new
       
       (1..sweep).each do |angle|
-        radian = (Math::PI / 180 ) * (angle + bot.heading)
+        radian = (Math::PI / 180 ) * (bot.heading - angle)
         @range.times do |distance|
           scan_points << {
-            x:  @bot.position[:x] + (Math.sin(radian).round(DECIMAL_PLACES) * (distance + 1)),
-            y:  @bot.position[:y] + (Math.cos(radian).round(DECIMAL_PLACES) * (distance + 1))
+            x:  (@bot.position[:x] + (Math.sin(radian).round(DECIMAL_PLACES) * (distance + 1))).floor,
+            y:  (@bot.position[:y] + (Math.cos(radian).round(DECIMAL_PLACES) * (distance + 1))).floor
           }
         end
-        
       end
       
       # build wall points
       wall_points = Set.new
       #left and right
       (@bot.arena.height+2).times do |y| 
-        wall_points << {x: - 1.0, y: y - 1.0}
-        wall_points << {x: @bot.arena.width + 1.0, y: y - 1.0}
+        wall_points << {x: - 1, y: y - 1}
+        wall_points << {x: @bot.arena.width + 1, y: y - 1}
       end
       #top & bottom
       (@bot.arena.width+2).times do |x| 
-        wall_points << {x: x - 1.0, y: - 1.0}
-        wall_points << {x: x - 1.0, y: @bot.arena.height + 1.0}
+        wall_points << {x: x - 1, y: - 1}
+        wall_points << {x: x - 1, y: @bot.arena.height + 1}
       end
       
-      found_points = (wall_points.to_a & scan_points.to_a).collect{|point| {type: :wall}.merge(point)}
+      found_points = (wall_points.to_a & scan_points.to_a).collect{|point| {type: :wall}.merge(point)}.compact
 
       # enemy points
-      enemy_points = @bot.arena.bots.collect {|bot| bot.position unless bot.position == @bot.position}
+      enemy_points = @bot.arena.bots.collect {|bot| {x: bot.position[:x].floor, y: bot.position[:y].floor} unless bot.position == @bot.position}.compact
       found_points += (enemy_points.to_a & scan_points.to_a).collect{|point| {type: :enemy}.merge(point)}
 
       found_points
@@ -51,6 +51,8 @@ module Brawl
   
 
     private
+
+
 
     # Figure out how to use this... what is self?
     #

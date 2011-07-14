@@ -36,27 +36,27 @@ describe Brawl::Scanner do
     end
   
     it "should return an empty array of contacts if nothing is in range" do
-      scanner = Brawl::Scanner.new(range: 5, max_sweep: 180, bot: bot)
+      scanner = Brawl::Scanner.new(range: 1, max_sweep: 180, bot: bot)
       scanner.scan(angle: 0, sweep: 1).should be_empty
     end
-  
+      
     it "should find walls if in range" do
       scanner = Brawl::Scanner.new(range: 6, max_sweep: 180, bot: bot)
       scanner.scan(angle: 0, sweep: 1).should_not be_empty
     end
-
+    
     it "should find a wall type contact if in range" do
       scanner.scan(angle: 0, sweep: 1).any?{|contact| contact[:type] == :wall}.should be_true
     end
-
+    
     it "should find enemies if in range" do
       enemy = double("Brawl::Bot")
       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
       arena.stub!(:bots).and_return([bot, enemy])
-      scanner = Brawl::Scanner.new(range: 2, max_sweep: 180, bot: bot)
+      scanner = Brawl::Scanner.new(range: 3, max_sweep: 180, bot: bot)
       scanner.scan(angle: 0, sweep: 1).should_not be_empty
     end  
-
+    
     it "should not find enemies if out of range" do
       enemy = double("Brawl::Bot")
       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
