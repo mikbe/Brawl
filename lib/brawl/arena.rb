@@ -2,12 +2,16 @@ module Brawl
   
   class Arena
     
-    attr_reader :width, :height
+    attr_reader :width, :height, :bots
     
-    def initialize(args={})
-      args.each do |property, value|
-        instance_variable_set("@#{property}", value) if public_methods(false).include? property
-      end
+    def initialize(params={})
+      @width  = params[:width]
+      @height = params[:height]
+      @bots   = []
+    end
+
+    def add_bot(bot)
+      @bots << bot unless @bots.include? bot
     end
     
   end

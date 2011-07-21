@@ -1,17 +1,21 @@
 module Brawl
   class BasicWeapon
-    include HashableProperties
     
     attr_reader :range, :reload_time, :power, :bot
     
-    def initialize(args={})
-      set_properties(args)
+    def initialize(params={})
+      @reload_time  = params[:reload_time]
+      @range        = params[:range]
+      @power        = params[:power]
+      @bot          = params[:bot]
+
       @reload_time      ||= 2.0
       @reload_countdown   = Time.now
     end
      
     def fire(aim)
       
+      # refactor
       case aim.keys.first
         when :at
           direction = aim[:at]
@@ -22,13 +26,22 @@ module Brawl
       end
 
       @reload_countdown = Time.now + @reload_time
-
-      # cut and past tells me this probaly belongs somewhere else
+      
+      # refactor
+      # cut and paste tells me this probably belongs somewhere else
       enemy_points = @bot.arena.bots.collect do |bot| 
-        {x: bot.position[:x].floor, y: bot.position[:y].floor} unless bot.position == @bot.position
+        unless bot.position == @bot.position
+          { x: bot.position[:x].floor,  
+            y: bot.position[:y].floor}
+        end
       end.compact
 
-      cone = {origin: @bot.position, direction: direction, radius: @range, angle: 1}
+      cone = {
+        origin: @bot.position, 
+        direction: direction, 
+        radius: @range, 
+        angle: 1
+      }
 
       enemy_points.any? do |point|
         Brawl::MathHelper.point_in_cone?({point: point}.merge(cone))

@@ -3,19 +3,33 @@ require 'spec_helper'
 describe Brawl::BasicBot do
     
   let(:arena) {double("Brawl::Arena")}
-  let(:bot) {Brawl::BasicBot.new position: {x: 0.0, y: 0.0}, heading: 0, arena: arena}
+  let(:bot) {
+    Brawl::BasicBot.new(
+      position: {x: 0.0, y: 0.0}, 
+      heading: 0, 
+      arena: arena
+    )
+  }
   
   context "when initializing" do
   
     it "should initialize properties using a hash" do
-      Brawl::BasicBot.new(position: {x: 10.0, y: 10.0}, heading: 50).position.should == {x: 10.0, y: 10.0}
+      Brawl::BasicBot.new(
+        position: {x: 10.0, y: 10.0}, 
+        heading: 50
+      ).position.should == {x: 10.0, y: 10.0}
     end
   
     # this is how I intend to add features like different weapons and whatnot
     it "should have the methods of the parts that are injected into it" do
       scanner = double("Brawl::BasicScanner")
       scanner.stub!("scantastic!")
-      bot = Brawl::BasicBot.new(position: {x: 0.0, y: 0.0}, heading: 0, arena: arena, parts:{scanner: scanner})
+      bot = Brawl::BasicBot.new(
+        position: {x: 0.0, y: 0.0}, 
+        heading: 0, 
+        arena: arena, 
+        parts:{scanner: scanner}
+      )
       bot.should respond_to(:scantastic!)
     end
   

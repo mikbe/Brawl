@@ -4,17 +4,19 @@ module Brawl
   
   class BasicBot
     extend Forwardable
-    include HashableProperties
     
     attr_reader :position, :heading, :arena, :parts
 
     DECIMAL_PLACES  = 1
     
-    def initialize(args={})
-      set_properties(args)
+    def initialize(params={})
+      @position = params[:position]
+      @heading  = params[:heading]
+      @arena    = params[:arena]
+      @parts    = params[:parts]
       
       # Add parts's methods to the bot class dynamically
-      # makes it super easy to extend the bot with new parts!
+      # this is how the game functionality will be expanded
       @parts.each do |part, instance|
         instance_variable_set("@#{part}", instance)
         self.class.def_delegators "@#{part}", *(instance.public_methods(false))
@@ -34,6 +36,7 @@ module Brawl
     
     def turn(args)
     
+      # refactor
       if args.is_a?(Hash)
         if args[:to_angle]
           turn_to(args[:to_angle])
