@@ -12,11 +12,24 @@ describe Brawl::Arena do
     Brawl::Arena.new(width: 100).width.should == 100
   end
 
-  it "should add a bot to the list of bots in the arena" do
-    bot = Brawl::BasicBot.new
-    expect{arena.add_bot(bot)}.should 
-      change(arena.bots, :count).
-      by(1)
+  it "should place an object in a given position" do
+    arena.add_object("Howdy" => {x: 50, y: 50}).should be_true
   end
+
+  it "should not place objects where there is an object already" do
+    arena.add_object("Howdy" => {x: 50, y: 50})
+    arena.add_object("Hi" => {x: 50, y: 50}).should be_false
+  end
+  
+  it "should return object information for a position" do
+    arena.add_object("Howdy" => {x: 50, y: 50})
+    arena.ping(x: 50, y: 50).should == "Howdy"
+  end
+  
+  it "should not return any information for an empty position" do
+    arena.ping(x: 50, y: 50).should == nil
+  end
+  
+  
   
 end

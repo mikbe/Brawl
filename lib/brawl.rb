@@ -3,6 +3,7 @@ require "brawl/version"
 require "brawl/math_helper"
 
 require "brawl/arena"
+require "brawl/arena_proxy"
 
 require "brawl/basic_scanner"
 require "brawl/basic_weapon"
