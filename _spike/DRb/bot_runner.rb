@@ -23,7 +23,26 @@ class BotRunner
     DRb.stop_service
   end
 
-  #private 
+
+  # def run
+  #   Thread.start {
+  #     msg = []
+  #     response = []
+  #     Thread.start {
+  #       $SAFE = 1
+  #       code = Brawl::Bot.new(msg, response)
+  #       while @run
+  #         sleep(rand(0))
+  #         code.loop do |bot|
+  #           puts "bot code loop"
+  #           value = @proxy.move([rand(3)])
+  #           puts "value: #{value}"
+  #         end
+  #       end
+  #     }
+  #   }
+  # end
+
 
   # def run
   #   Thread.start {
@@ -51,6 +70,8 @@ class BotRunner
   #     end
   #   }
   # end
+
+  private 
   
   def make_run(code)
     method = 
