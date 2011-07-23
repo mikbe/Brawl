@@ -3,51 +3,47 @@ module Brawl
   module BasicMotor
     include BasicPart
     
-    attr_reader :max_move, :max_turn
+    attr_reader :move_max, :turn_max
     
     def initialize(params={})
-      puts
-      puts "init called"
-      set :max_move,  2, params
-      set :max_turn, 90, params
-      puts "max_move: #{@max_move}"
-      super
+      set :move_max,  2, params
+      set :turn_max, 90, params
     end
-    
-    # movement
+
     def move(count=1)
+      count = [count, @move_max].min
       count.times do 
-        angle = (Math::PI / 180 ) * @heading
+        angle = (Math::PI / 180 ) * heading
         @location[:x] += Math.sin(angle).round(DECIMAL_PLACES)
         @location[:y] += Math.cos(angle).round(DECIMAL_PLACES)
       end
     end
 
-    # turns
-
-    def turn(args)
-
+    def turn(params)
       # refactor
-      if args.is_a?(Hash)
-        if args[:to_angle]
-          turn_to(args[:to_angle])
-        elsif args[:by_degrees]
-          turn_by(args[:by_degrees])
-        end
+      if params.is_a?(Hash)
+        turn_to(params[:to_angle])    if params[:to_angle]
+        turn_by(params[:by_degrees])  if params[:by_degrees]
       else
         angles = {left: -90, right: 90, around: 180}
-        turn_by(angles[args])
+        turn_by(angles[params])
       end
-
     end
 
+    private
+
     def turn_to(angle)
-      @heading = angle
+      angle = boundscheck_angle(angle)
+      @heading = angle % 360
     end
 
     def turn_by(degrees)
-      @heading += degrees
-      @heading %= 360
+      degrees = boundscheck_angle(degrees)
+      @heading = (@heading + degrees) % 360
+    end
+    
+    def boundscheck_angle(angle)
+      [angle.abs % 360, @turn_max].min * (angle.abs / angle)
     end
     
   end

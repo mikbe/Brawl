@@ -1,23 +1,14 @@
-# require 'spec_helper'
-# 
-# describe Brawl::BasicScanner do
-# 
-# =begin
-#  # How will I use a part?
-#  part = Brawl::Part.new(property)
-#  Bot = Brawl::BasicBot.new(parts)
-# 
-# An object's methods are restricted by the properties of a model
-# The model's properties includes what objects are using it.
-# The object also is also composed of sub-objects that provide functionality.
-# The sub-objects need to know who they belong to and need to know about the
-# model.
-# 
-# =end
-# 
-#   # let(:bot) {Brawl::BasicBot.new}
-#   # let(:arena) {Brawl::Arena.new}
-#   # let(:scanner) {Brawl::BasicScanner.new(range: 10, max_angle: 180, bot: bot)}
+require 'spec_helper'
+
+describe Brawl::BasicScanner do
+
+  let(:arena){Brawl::Arena.new(size: {width: 100, length: 100})}
+  let(:bot) do 
+    Brawl::BasicBot.new(
+      arena: arena, 
+      parts: {Brawl::BasicScanner=>{scan_max: 10}}
+    )
+  end
 #   
 #   it "should set its range property when initialized" do
 #     scanner = Brawl::BasicScanner.new(range: 10)
@@ -104,4 +95,4 @@
 # 
 #   end
 # 
-# end
+end

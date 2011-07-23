@@ -9,9 +9,11 @@ module Brawl
 
     def initialize(params={})
       set :id, UUIDTools::UUID.timestamp_create.to_s, params
-      set :location, {x: 0, y: 0}, params
-      set :heading, 0, params
+      #set :location, {x: 0, y: 0}, params
+      #set :heading, 0, params
       set :health, 1, params
+      @heading = params[:heading] || 0
+      @location = params[:location] || {x: 0, y: 0}
       set :properties, [:id, :location, :heading]
     end
 
@@ -21,6 +23,7 @@ module Brawl
         hash[property] = self.send(property)
       end
     end
+    
     protected
     
     def set(property, default, params={})

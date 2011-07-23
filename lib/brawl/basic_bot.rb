@@ -12,15 +12,14 @@ module Brawl
     DECIMAL_PLACES = 1
 
     def initialize(params={})
-      set :arena, nil, params
-      set :parts, nil, params
+      @arena = params[:arena]
+      @parts = params[:parts]
 
       add_parts(@parts, params)
 
       super
 
       @arena.add_object(self)
-
     end
 
     # properties that can be 'seen' in the arena
@@ -34,12 +33,18 @@ module Brawl
 
     def add_parts(parts, params)
       return unless parts
-      parts.each do |part_class, init_params|
+      parts.each do |part_module, init_params|
         params.merge! init_params
-        singleton_class.send :include, part_class
+        part_module.send :alias_method, :initialize_parts, :initialize
+        extend part_module
       end
+      initialize_parts(params)
     end
 
+    def initialize_parts(params)
+      super
+    end
+    
   end
 
 end

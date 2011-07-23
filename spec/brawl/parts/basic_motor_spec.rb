@@ -6,11 +6,9 @@ describe Brawl::BasicMotor do
   let(:bot) do 
     Brawl::BasicBot.new(
       arena: arena, 
-      parts: {Brawl::BasicMotor=>{max_move: 5}}
+      parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
     )
   end
-
-  it {bot.max_move.should == 5}
 
   context "when moving" do
 
@@ -22,6 +20,7 @@ describe Brawl::BasicMotor do
     
     it "should move forward one space" do
       bot.turn :right
+      
       expect{bot.move}.should change(bot, :location).
        from({x: 0.0, y: 0.0}).
        to({x: 1.0, y: 0.0})
@@ -34,11 +33,43 @@ describe Brawl::BasicMotor do
        to({x: 0.7, y: 0.7})
     end
 
+    it "should not move more than the maximum allowed" do
+      expect{bot.move 5}.should change(bot, :location).
+       from({x: 0.0, y: 0.0}).
+       to({x: 0.0, y: 3.0})
+    end
+
   end
     
   context "when turning" do
-     
+
     context "and given an angle" do
+
+      it "should 'wrap-around' degrees given" do
+        expect{bot.turn to_angle: 390}.should change(bot, :heading).
+          from(0).
+          to(30)
+      end
+
+      it "should turn by negative degrees" do
+        expect{bot.turn to_angle: -90}.should change(bot, :heading).
+          from(0).
+          to(270)
+      end
+
+      it "should not turn more than its maximum turn rate" do
+        bot = Brawl::BasicBot.new(
+          arena: arena, 
+          parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+        )
+        expect{bot.turn to_angle: 91}.should change(bot, :heading).
+          from(0).
+          to(90)
+      end
+
+    end
+
+    context "and given degrees" do
       
       it "should turn to the angle specified" do
         expect{bot.turn to_angle: 45}.should change(bot, :heading).
@@ -66,23 +97,35 @@ describe Brawl::BasicMotor do
           from(300).
           to(30)
       end
-      
-    end
 
-    context "and given a degree" do
-      
-      it "should 'wrap-around' degrees given" do
+      it "should 'wrap-around' degrees larger than 360" do
         expect{bot.turn by_degrees: 390}.should change(bot, :heading).
           from(0).
           to(30)
       end
 
-      it "should turn by negative degrees" do
-        expect{bot.turn by_degrees: -90}.should change(bot, :heading).
+     it "should turn using negative degrees" do
+       bot = Brawl::BasicBot.new(
+         arena: arena, 
+         parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+       )
+       
+       bot.turn to_angle: 20
+       expect{bot.turn by_degrees: -40}.should change(bot, :heading).
+         from(20).
+         to(340)
+     end
+
+      it "should not turn more than its maximum turn rate" do
+        bot = Brawl::BasicBot.new(
+          arena: arena, 
+          parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+        )
+        expect{bot.turn by_degrees: 91}.should change(bot, :heading).
           from(0).
-          to(270)
+          to(90)
       end
-      
+
     end
 
     context "and given a direction name" do
