@@ -33,8 +33,8 @@ module Brawl
     private
 
     def turn_to(angle)
-      angle = boundscheck_angle(angle)
-      @heading = angle % 360
+      turn_by_angle = Helper.wrap_angle(angle - @heading)
+      turn_by(turn_by_angle)
     end
 
     def turn_by(degrees)

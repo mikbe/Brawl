@@ -57,6 +57,28 @@ describe Brawl::BasicMotor do
           to(270)
       end
 
+      it "should turn to a positive angle within its maximum turn rate" do
+        bot = Brawl::BasicBot.new(
+          arena: arena, 
+          parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+        )
+        bot.turn to_angle: 40
+        expect{bot.turn to_angle: 320}.should change(bot, :heading).
+          from(40).
+          to(320)
+      end
+
+      it "should turn by negative degrees within its maximum turn rate" do
+        bot = Brawl::BasicBot.new(
+          arena: arena, 
+          parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+        )
+        bot.turn to_angle: 40
+        expect{bot.turn to_angle: -40}.should change(bot, :heading).
+          from(40).
+          to(320)
+      end
+
       it "should not turn more than its maximum turn rate" do
         bot = Brawl::BasicBot.new(
           arena: arena, 
@@ -66,6 +88,7 @@ describe Brawl::BasicMotor do
           from(0).
           to(90)
       end
+
 
     end
 

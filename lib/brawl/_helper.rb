@@ -1,8 +1,33 @@
+require "bigdecimal"
+require "bigdecimal/math"
+
 module Brawl
 
   DECIMAL_PLACES  = 1
 
   class Helper
+
+    extend BigMath
+
+    def self.to_radian(angle)
+      big_angle = BigDecimal(angle.to_s)
+      big_angle * (PI(100) / 180.0)
+    end
+
+    def self.to_degree(angle)
+      big_angle = BigDecimal(angle.to_s)
+      big_angle * (180.0 / PI(100))
+    end
+
+    # returns a shorter complementary angle if one exists
+    # e.g. wrap_angle(270)  = -90
+    #      wrap_angle(-320) = 40
+    #      wrap_angle(45)   = 45
+    def self.wrap_angle(angle)
+      # refactor? : can this be simplified?
+      return angle unless angle > 180 || angle < -180
+      (360 - angle.abs) * (angle.abs / angle) * -1
+    end
 
     def self.point_in_cone?(params)
 
@@ -10,22 +35,20 @@ module Brawl
       angle     = params[:angle]
       direction = params[:direction]
       origin    = params[:origin]
-      point     = params[:point]
+      point     = params[:point] # refactor : bad name
       
       x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
-      
-      # Is the distance between the origin and the target is
-      # <= to the scan range?
+
+      # no point in scanning if the target is out of range
       distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
       return false if distance > radius
 
       heading_to_target = Math.atan2(x2 - x1, y2 - y1)
 
-      min_cone_angle = (Math::PI / 180) * ((direction - (angle / 2)) % 360)
-      max_cone_angle = (Math::PI / 180) * ((direction + (angle / 2)) % 360)
+      min_cone_angle = to_radian((direction - (angle / 2)) % 360)
+      max_cone_angle = to_radian((direction + (angle / 2)) % 360)
 
-      # Now check if the ray from the origin to the
-      # target is inside the scan angle.
+      # Check if the heading to the target is inside the scan angle
       if min_cone_angle > max_cone_angle
         heading_to_target >= min_cone_angle ||
          heading_to_target <= max_cone_angle
@@ -49,6 +72,8 @@ module Brawl
       end
       points
     end
+
+
 
   end
 
