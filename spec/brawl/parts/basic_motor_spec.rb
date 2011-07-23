@@ -39,6 +39,38 @@ describe Brawl::BasicMotor do
        to({x: 0.0, y: 3.0})
     end
 
+    it "should not move into walls" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 0, y:99},
+        parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
+      )
+      expect{bot.move}.should_not change(bot, :location)
+    end
+
+    it "should move in reverse" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 50, y:50},
+        parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
+      )
+      expect{bot.move -1}.should change(bot, :location).
+       from({x: 50.0, y: 50.0}).
+       to({x: 50.0, y: 49.0})
+    end
+
+    it "should not move in reverse more than the maximum allowed" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 50, y:50},
+        parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
+      )
+      expect{bot.move -5}.should change(bot, :location).
+       from({x: 50.0, y: 50.0}).
+       to({x: 50.0, y: 47.0})
+    end
+
+
   end
     
   context "when turning" do
@@ -87,6 +119,16 @@ describe Brawl::BasicMotor do
         expect{bot.turn to_angle: 91}.should change(bot, :heading).
           from(0).
           to(90)
+      end
+
+      it "should not turn more than its maximum turn rate counter-clockwise" do
+        bot = Brawl::BasicBot.new(
+          arena: arena, 
+          parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 90}}
+        )
+        expect{bot.turn to_angle: -91}.should change(bot, :heading).
+          from(0).
+          to(270)
       end
 
 

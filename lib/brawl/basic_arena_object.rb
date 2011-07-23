@@ -14,7 +14,7 @@ module Brawl
       set :health, 1, params
       @heading = params[:heading] || 0
       @location = params[:location] || {x: 0, y: 0}
-      set :properties, [:id, :location, :heading]
+      set :properties, [:id, :class, :location, :heading]
     end
 
     # properties are values that are OK to be publicly 'seen' in the arena

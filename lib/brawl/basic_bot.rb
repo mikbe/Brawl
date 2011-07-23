@@ -12,8 +12,8 @@ module Brawl
     DECIMAL_PLACES = 1
 
     def initialize(params={})
-      @arena = params[:arena]
-      @parts = params[:parts]
+      set :arena, nil, params
+      set :parts, nil, params
 
       add_parts(@parts, params)
 

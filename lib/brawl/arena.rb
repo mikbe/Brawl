@@ -2,7 +2,7 @@ module Brawl
   
   class Arena
     
-    attr_reader :size, :objects
+    attr_reader :size
     
     def initialize(params={})
       @size     = params[:size]
@@ -44,13 +44,17 @@ module Brawl
       !!(object.location = location)
     end
 
-    # I think this might be able to change to the object itself
+    # allows searching by object properties like location or id
     def get_object(property_hash)
       property, value = property_hash.first
       @objects.each do |object|
         return object.properties if object.properties[property] == value
       end
       nil
+    end
+
+    def get_all_objects
+      @object.collect {|object| object.properties}
     end
 
     def in_bounds?(location)
@@ -60,6 +64,15 @@ module Brawl
     end
     
     def ping(location)
+      
+      # test for walls
+      x, y = location[:x], location[:y]
+      
+      if ([-1, self.width].include?(x) && (0...self.length).member?(y)) ||
+         ([-1, self.length].include?(y) && (0...self.width).member?(x))
+        return {class: "Brawl::Wall", location: location}
+      end
+      
       get_object(location: location)
     end
 

@@ -113,11 +113,27 @@ describe Brawl::Arena do
       arena.add_object(object1)
       arena.ping(x: 50, y: 50).should == object1.properties
     end
-  
-    it "should not return any information for an empty location" do
-      arena.ping(x: 50, y: 50).should == nil
+
+    it "should return nothing for an empty location" do
+      arena.ping(x: 50, y: 50).should be_nil
     end
-  
+
+    it "should return a wall for the areas around the arena" do
+      arena.ping(x:-1,y:0).should == 
+        {class: "Brawl::Wall", location: {x:-1, y:0}}
+    end
+
+    it "should return nothing for areas outside the wall" do
+      # note that corners can't be "seen" from inside the arena so are not walls
+      arena.ping(x:-1,y:-1).should    be_nil
+      arena.ping(x:100,y:100).should  be_nil
+      arena.ping(x:-1,y:100).should   be_nil
+      arena.ping(x:100,y:-1).should   be_nil
+      arena.ping(x:0,y:101).should    be_nil
+      arena.ping(x:101,y:0).should    be_nil
+      arena.ping(x:101,y:101).should  be_nil
+    end
+
   end
-  
+
 end

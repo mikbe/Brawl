@@ -19,7 +19,7 @@ module Brawl
       big_angle * (180.0 / PI(100))
     end
 
-    # returns a shorter complementary angle if one exists
+    # returns a shorter angle if one exists (angle - 180's complement)
     # e.g. wrap_angle(270)  = -90
     #      wrap_angle(-320) = 40
     #      wrap_angle(45)   = 45
@@ -72,10 +72,6 @@ module Brawl
       end
       points
     end
-
-
-
   end
-
 
 end

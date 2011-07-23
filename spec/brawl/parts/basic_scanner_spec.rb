@@ -6,36 +6,27 @@ describe Brawl::BasicScanner do
   let(:bot) do 
     Brawl::BasicBot.new(
       arena: arena, 
-      parts: {Brawl::BasicScanner=>{scan_max: 10}}
+      parts: {Brawl::BasicScanner=>{scan_max: 10, angle_max: 90}}
     )
   end
-#   
-#   it "should set its range property when initialized" do
-#     scanner = Brawl::BasicScanner.new(range: 10)
-#     scanner.range.should == 10
-#   end 
-#   
-#   it "should set its max_sweep property when initialized" do
-#     scanner = Brawl::BasicScanner.new(range: 10)
-#     scanner.range.should == 10
-#   end 
-# 
-#   it "should initialize properties using a hash" do
-#     Brawl::BasicScanner.new(range: 10).range.should == 10
-#   end
-#   
-#   context "when scanning" do
-# 
-#     before(:each) do
-#       arena = Brawl::Arena.new(width:3, length: 5)
-#       bot   = Brawl::BasicBot.new(arena: arena, location: {x: 3.0, y: 0.0})
-#       arena.add_bot(bot)
-#     end
-#   
-#     it "should return an empty array of contacts if nothing is in range" do
-#       scanner = Brawl::BasicScanner.new(range: 1, max_angle: 180, bot: bot)
-#       scanner.scan(direction: 0, angle: 1).should be_empty
-#     end
+
+  it "should set its maximum scan distance initialized" do
+    bot.scan_max.should == 10
+  end 
+
+  it "should set its maximum scan angle initialized" do
+    bot.angle_max.should == 90
+  end 
+
+  context "when scanning" do
+
+    it "should return an empty array of contacts if nothing is in range" # do
+     #      bot = Brawl::BasicBot.new(
+     #        arena: arena, 
+     #        parts: {Brawl::BasicScanner=>{scan_max: 1, angle_max: 90}}
+     #      )
+     #      bot.scan(direction: 0, angle: 1).should be_empty
+     #    end
 #       
 #     it "should find walls if in range" do
 #       scanner = Brawl::BasicScanner.new(range: 6, max_angle: 180, bot: bot)
@@ -92,7 +83,7 @@ describe Brawl::BasicScanner do
 #       scanner = Brawl::BasicScanner.new(range: 25, max_angle: 180, bot: bot)
 #       scanner.scan(direction: 45, angle: 45).any?{|contact| contact[:type] == :enemy}.should be_true
 #     end  
-# 
-#   end
-# 
+#
+  end
+
 end

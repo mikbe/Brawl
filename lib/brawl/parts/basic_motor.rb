@@ -11,11 +11,16 @@ module Brawl
     end
 
     def move(count=1)
+
+      heading_radian = Helper.to_radian((@heading + (count < 0 ? 180 : 0)))
+      count = count.abs
       count = [count, @move_max].min
+      
       count.times do 
-        angle = (Math::PI / 180 ) * heading
-        @location[:x] += Math.sin(angle).round(DECIMAL_PLACES)
-        @location[:y] += Math.cos(angle).round(DECIMAL_PLACES)
+        x = @location[:x] + Math.sin(heading_radian).round(DECIMAL_PLACES)
+        y = @location[:y] + Math.cos(heading_radian).round(DECIMAL_PLACES)
+        break unless @arena.in_bounds?({x: x, y: y})
+        @location[:x], @location[:y] = x, y
       end
     end
 
