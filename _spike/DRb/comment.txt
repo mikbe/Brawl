@@ -1,0 +1,11 @@
+I've started a rewrite on this app to fix all the horrible Demeter violations and just bad design all around but in the process I've come up with a rough version of a security model.
+
+Can you guys take a look and tell me what you think?
+
+[https://github.com/mikbe/Brawl/blob/master/_spike/DRb/bot.rb](https://github.com/mikbe/Brawl/blob/master/_spike/DRb/bot.rb)
+
+You can run the battle_controller.rb file and it should load up everything else. It demonstrates two bots running through the same arena.
+
+The code for the bot is as safe as $SAFE can make it while still allowing the user to do very basic things like make an array ($SAFE = 3). Plus it's isolated into another process from the rest of the code, including other bots, and uses DRb to communicate inter-process. There's probably a simpler way of doing that communication but that was actually pretty easy. Oh and an ArenaProxy class is used so all of the Arena methods and properties aren't exposed to the bots.
+
+The reason I'm doing the weird array messaging in two looping threads is because DRb will only work at $SAFE 1 or 0.

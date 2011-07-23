@@ -95,7 +95,7 @@ end
 # If you try to overwrite methods that are important to the bot like forward or reverse they 
 # won't be used since this would break the system's ability to interact with your bot.
 Laser.engage do |contact|
-  # lazy aiming (a better approach might be to remember the last few contacts and try to extrapolate position)
+  # lazy aiming (a better approach might be to remember the last few contacts and try to extrapolate location)
 
   # Aim sends the command to move the turrent but it's a non-blocking call
   aim contact.direction

@@ -6,12 +6,12 @@ class Arena
   end
   
   def add_bot(client_id)
-    @bots[client_id] = {position: 0}
+    @bots[client_id] = {location: 0}
   end
   
   def move(value, client_id)
     puts "move called: #{value.inspect}; #{client_id}"
-    @bots[client_id][:position] += value.first
+    @bots[client_id][:location] += value.first
   end
   
 end

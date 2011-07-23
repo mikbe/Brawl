@@ -6,7 +6,8 @@ require 'brawl'
 
 RSpec::Matchers.define :be_approximately do |approximate_value|
   match do |actual|
-    (actual > approximate_value - @accuracy) && (actual < approximate_value + @accuracy)
+    (actual > approximate_value - @accuracy) && 
+    (actual < approximate_value + @accuracy)
   end
   
   chain :within do |accuracy| 
@@ -14,7 +15,9 @@ RSpec::Matchers.define :be_approximately do |approximate_value|
   end
   
   failure_message_for_should do |actual|
-    "expected #{actual} to be about #{approximate_value} (between #{approximate_value - @accuracy} and #{approximate_value + @accuracy})"
+    "expected #{actual} to be about #{approximate_value}" +
+    " (between #{approximate_value - @accuracy} and " +
+    "#{approximate_value + @accuracy})"
   end
     
 end

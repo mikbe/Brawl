@@ -1,12 +1,12 @@
 require "brawl/version"
 
-require "brawl/math_helper"
+require "brawl/_helper"
+
+require "brawl/basic_arena_object"
 
 require "brawl/arena"
-require "brawl/arena_proxy"
 
-require "brawl/basic_scanner"
-require "brawl/basic_weapon"
 require "brawl/basic_bot"
+require "brawl/parts"
 
 require "brawl/battle_controller"

@@ -30,14 +30,14 @@ module Brawl
       # refactor
       # cut and paste tells me this probably belongs somewhere else
       enemy_points = @bot.arena.bots.collect do |bot| 
-        unless bot.position == @bot.position
-          { x: bot.position[:x].floor,  
-            y: bot.position[:y].floor}
+        unless bot.location == @bot.location
+          { x: bot.location[:x].floor,  
+            y: bot.location[:y].floor}
         end
       end.compact
 
       cone = {
-        origin: @bot.position, 
+        origin: @bot.location, 
         direction: direction, 
         radius: @range, 
         angle: 1

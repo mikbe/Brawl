@@ -18,18 +18,18 @@ module Brawl
       direction   = args[:direction]
       
       enemy_points = bot.arena.bots.collect do |bot| 
-        { x: bot.position[:x].floor, 
-          y: bot.position[:y].floor
-        } unless bot.position == @bot.position
+        { x: bot.location[:x].floor, 
+          y: bot.location[:y].floor
+        } unless bot.location == @bot.location
       end.compact
 
       wall_points = Brawl::MathHelper.points_surrounding_rectangle(
         bot.arena.width, 
-        bot.arena.height
+        bot.arena.length
       )
 
       cone = {
-        origin: bot.position, 
+        origin: bot.location, 
         direction: direction, 
         radius: @range, 
         angle: angle

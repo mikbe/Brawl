@@ -1,6 +1,8 @@
 module Brawl
-  
-  class MathHelper
+
+  DECIMAL_PLACES  = 1
+
+  class Helper
 
     def self.point_in_cone?(params)
 
@@ -32,21 +34,23 @@ module Brawl
           heading_to_target <= max_cone_angle
       end
     end
-    
-    def self.points_surrounding_rectangle(width, height)
+
+    def self.points_surrounding_rectangle(width, length)
       points = []
       #left and right
-      (height).times do |y| 
+      (length).times do |y| 
         points << {x: - 1, y: y}
         points << {x: width + 1, y: y}
       end
       #top & bottom
       (width+2).times do |x| 
         points << {x: x - 1, y: - 1}
-        points << {x: x - 1, y: height + 1}
+        points << {x: x - 1, y: length + 1}
       end
       points
     end
-    
+
   end
+
+
 end

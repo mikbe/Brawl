@@ -8,9 +8,9 @@
 #   let(:weapon) {Brawl::BasicWeapon.new(range: 2, power: 1, bot: bot)}
 # 
 #   before(:each) do
-#     arena = Brawl::Arena.new(height: 10, width: 10)
-#     bot   = Brawl::BasicBot.new(arena: arena, position: {x: 5.0, y: 0.0})
-#     enemy = Brawl::BasicBot.new(arena: arena, position: {x: 5.0, y: 1.0})
+#     arena = Brawl::Arena.new(length: 10, width: 10)
+#     bot   = Brawl::BasicBot.new(arena: arena, location: {x: 5.0, y: 0.0})
+#     enemy = Brawl::BasicBot.new(arena: arena, location: {x: 5.0, y: 1.0})
 #     #arena.add_bots([bot,enemy])
 #   end
 #   
@@ -61,16 +61,16 @@
 #     end
 #     
 #     it "should return true if it hits an enemy" do
-#       bot.stub!(:position).and_return({x: 5.0, y: 0.0})
+#       bot.stub!(:location).and_return({x: 5.0, y: 0.0})
 #       bot.stub!(:heading).and_return(0)
-#       enemy.stub!(:position).and_return({x: 5.0, y: 1.0})
+#       enemy.stub!(:location).and_return({x: 5.0, y: 1.0})
 #       weapon.fire(at: 0).should be_true
 #     end
 #     
 #     it "should return false if it doesn't hit an enemy" do
-#       bot.stub!(:position).and_return({x: 5.0, y: 0.0})
+#       bot.stub!(:location).and_return({x: 5.0, y: 0.0})
 #       bot.stub!(:heading).and_return(0)
-#       enemy.stub!(:position).and_return({x: 5.0, y: 1.0})
+#       enemy.stub!(:location).and_return({x: 5.0, y: 1.0})
 #       weapon.fire(at: 90).should be_false
 #     end
 #     

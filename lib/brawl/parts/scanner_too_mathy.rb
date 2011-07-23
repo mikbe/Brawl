@@ -15,7 +15,7 @@ module Brawl
     def scan(args={})
       
       sweep    = [@max_sweep, args[:sweep] ||= @max_sweep].min
-      triangle = [@bot.position]
+      triangle = [@bot.location]
 
       # refactor
       [
@@ -23,9 +23,9 @@ module Brawl
         (Math::PI / 180 ) * (bot.heading + (sweep/2))
       ].each do |radian|
         triangle << {
-          x:  @bot.position[:x] + 
+          x:  @bot.location[:x] + 
               (Math.sin(radian).round(DECIMAL_PLACES) * @range),
-          y:  @bot.position[:y] + 
+          y:  @bot.location[:y] + 
               (Math.cos(radian).round(DECIMAL_PLACES) * @range)
         }
       end
@@ -42,14 +42,14 @@ module Brawl
       # build wall points
       wall_points = Set.new
       #left and right
-      (@bot.arena.height+2).times do |y| 
+      (@bot.arena.length+2).times do |y| 
         wall_points << {x: - 1.0, y: y - 1.0}
         wall_points << {x: @bot.arena.width + 1.0, y: y - 1.0}
       end
       #top & bottom
       (@bot.arena.width+2).times do |x| 
         wall_points << {x: x - 1.0, y: - 1.0}
-        wall_points << {x: x - 1.0, y: @bot.arena.height + 1.0}
+        wall_points << {x: x - 1.0, y: @bot.arena.length + 1.0}
       end
       
       # refactor
@@ -62,7 +62,7 @@ module Brawl
 
       # enemy points
       enemy_points = @bot.arena.bots.collect do |bot| 
-        bot.position unless bot.position == @bot.position
+        bot.location unless bot.location == @bot.location
       end
       
       # refactor

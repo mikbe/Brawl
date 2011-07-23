@@ -36,8 +36,8 @@
 #   context "when scanning" do
 # 
 #     before(:each) do
-#       arena = Brawl::Arena.new(width:3, height: 5)
-#       bot   = Brawl::BasicBot.new(arena: arena, position: {x: 3.0, y: 0.0})
+#       arena = Brawl::Arena.new(width:3, length: 5)
+#       bot   = Brawl::BasicBot.new(arena: arena, location: {x: 3.0, y: 0.0})
 #       arena.add_bot(bot)
 #     end
 #   
@@ -58,7 +58,7 @@
 #     
 #     it "should find enemies if in range" do
 #       enemy = double("Brawl::BasicBot")
-#       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
+#       enemy.stub!(:location).and_return({x: 3.0, y: 2.0})
 #       arena.stub!(:bots).and_return([bot, enemy])
 #       scanner = Brawl::BasicScanner.new(range: 3, max_angle: 180, bot: bot)
 #       scanner.scan(direction: 0, angle: 1).any?
@@ -67,7 +67,7 @@
 #     
 #     it "should not find enemies if out of range" do
 #       enemy = double("Brawl::BasicBot")
-#       enemy.stub!(:position).and_return({x: 3.0, y: 2.0})
+#       enemy.stub!(:location).and_return({x: 3.0, y: 2.0})
 #       arena.stub!(:bots).and_return([bot, enemy])
 #       scanner = Brawl::BasicScanner.new(range: 1, max_angle: 180, bot: bot)
 #       scanner.scan(direction: 0, angle: 1).should be_empty
@@ -75,13 +75,13 @@
 #     
 #     it "should find enemies to the side with a wide scan" do
 #       arena.stub!(:width).and_return(100)
-#       arena.stub!(:height).and_return(100)
+#       arena.stub!(:length).and_return(100)
 #       bot.stub!(:arena).and_return(arena)
-#       bot.stub!(:position).and_return({x: 20.0, y: 20.0})
+#       bot.stub!(:location).and_return({x: 20.0, y: 20.0})
 #       bot.stub!(:heading).and_return(0)
 #       arena.stub!(:bots).and_return([bot])
 #       enemy = double("Brawl::BasicBot")
-#       enemy.stub!(:position).and_return({x: 10.0, y: 20.0})
+#       enemy.stub!(:location).and_return({x: 10.0, y: 20.0})
 #       arena.stub!(:bots).and_return([bot, enemy])
 #       scanner = Brawl::BasicScanner.new(range: 20, max_angle: 360, bot: bot)
 #       scanner.scan(direction: 0, angle: 180).any?
@@ -90,13 +90,13 @@
 #     
 #     it "should find enemies on an oblique" do
 #       arena.stub!(:width).and_return(100)
-#       arena.stub!(:height).and_return(100)
+#       arena.stub!(:length).and_return(100)
 #       bot.stub!(:arena).and_return(arena)
-#       bot.stub!(:position).and_return({x: 20.0, y: 20.0})
+#       bot.stub!(:location).and_return({x: 20.0, y: 20.0})
 #       bot.stub!(:heading).and_return(45)
 #       arena.stub!(:bots).and_return([bot])
 #       enemy = double("Brawl::BasicBot")
-#       enemy.stub!(:position).and_return({x: 35.0, y: 35.0})
+#       enemy.stub!(:location).and_return({x: 35.0, y: 35.0})
 #       arena.stub!(:bots).and_return([bot, enemy])
 #       scanner = Brawl::BasicScanner.new(range: 25, max_angle: 180, bot: bot)
 #       scanner.scan(direction: 45, angle: 45).any?{|contact| contact[:type] == :enemy}.should be_true
