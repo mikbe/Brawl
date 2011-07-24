@@ -26,16 +26,15 @@ module Brawl
 
       # the point where the cone starts
       origin    = params[:origin]
-      # the "length" of the one
+      # how long the cone is
       radius    = params[:radius]
-      # how "wide" the cone is
+      # how wide the cone is
       angle     = params[:angle]
       # the center angle of the cone
       direction = params[:direction]
-      
       # the point under test
       point     = params[:point]
-      
+
       x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
 
       # no point in continuing if the target is out of range

@@ -7,6 +7,7 @@ module Brawl
     def initialize(params={})
       @size     = params[:size]
       @objects  = []
+      add_walls
     end
 
     def length
@@ -54,7 +55,7 @@ module Brawl
     end
 
     def get_all_objects
-      @object.collect {|object| object.properties}
+      @objects.collect {|object| object.properties}
     end
 
     def in_bounds?(location)
@@ -62,18 +63,22 @@ module Brawl
       return false if location[:y] >= @size[:length] || location[:y] <  0
       true
     end
-    
+
     def ping(location)
-      
-      # test for walls
-      x, y = location[:x], location[:y]
-      
-      if ([-1, self.width].include?(x) && (0...self.length).member?(y)) ||
-         ([-1, self.length].include?(y) && (0...self.width).member?(x))
-        return {class: "Brawl::Wall", location: location}
-      end
-      
       get_object(location: location)
+    end
+
+    private 
+    
+    def add_walls
+      (0...width).each do |col|
+        @objects << Wall.new(location: {x: col, y: -1})
+        @objects << Wall.new(location: {x: col, y: length})
+      end
+      (0...length).each do |row|
+        @objects << Wall.new(location: {x: -1, y: row})
+        @objects << Wall.new(location: {x: width, y: row})
+      end
     end
 
   end

@@ -3,6 +3,7 @@ require "brawl/version"
 require "brawl/_helper"
 
 require "brawl/basic_arena_object"
+require "brawl/wall"
 
 require "brawl/arena"
 

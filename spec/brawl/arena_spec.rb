@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Brawl::Arena do
 
-  let(:arena){Brawl::Arena.new(size: {width: 100, length: 100})}
+  let(:arena){Brawl::Arena.new(size: {width: 10, length: 10})}
   let(:object1){Brawl::BasicArenaObject.new}
   let(:object2){Brawl::BasicArenaobject.new}
 
@@ -62,7 +62,7 @@ describe Brawl::Arena do
   context "when moving objects" do
 
     before(:each) do
-      object1 = Brawl::BasicArenaObject.new(location: {x: 50, y: 50})
+      object1 = Brawl::BasicArenaObject.new(location: {x: 5, y: 5})
       arena.add_object(object1)
     end
 
@@ -71,7 +71,7 @@ describe Brawl::Arena do
     end
 
     it "should not move an object if its already in the location" do
-      arena.move_object(object1 => {x: 50, y: 50}).should_not be_true
+      arena.move_object(object1 => {x: 5, y: 5}).should_not be_true
     end
   
     it "should move an object to the correct location" do
@@ -85,7 +85,7 @@ describe Brawl::Arena do
     end
   
     it "should not move below the bounds" do
-      arena.move_object(object1 => {x: -1, y: 50}).should be_false
+      arena.move_object(object1 => {x: -1, y: 5}).should be_false
     end
     
   end
@@ -93,13 +93,13 @@ describe Brawl::Arena do
   context "when getting objects" do
 
     it "should retrieve objects by a key and value" do
-      object1 = Brawl::BasicArenaObject.new(location: {x: 50, y: 50})
+      object1 = Brawl::BasicArenaObject.new(location: {x: 5, y: 5})
       arena.add_object(object1)
       arena.get_object(id: object1.id).should_not be_nil
     end
 
     it "should retrieve public object properties not the object itself" do
-      object1 = Brawl::BasicArenaObject.new(location: {x: 50, y: 50})
+      object1 = Brawl::BasicArenaObject.new(location: {x: 5, y: 5})
       arena.add_object(object1)
       arena.get_object(id: object1.id).should == object1.properties
     end
@@ -109,29 +109,29 @@ describe Brawl::Arena do
   context "when pinging locations for objects" do
 
     it "should return object information for a location" do
-      object1 = Brawl::BasicArenaObject.new(location: {x: 50, y: 50})
+      object1 = Brawl::BasicArenaObject.new(location: {x: 5, y: 5})
       arena.add_object(object1)
-      arena.ping(x: 50, y: 50).should == object1.properties
+      arena.ping(x: 5, y: 5).should == object1.properties
     end
 
     it "should return nothing for an empty location" do
-      arena.ping(x: 50, y: 50).should be_nil
+      arena.ping(x: 5, y: 5).should be_nil
     end
 
     it "should return a wall for the areas around the arena" do
-      arena.ping(x:-1,y:0).should == 
-        {class: "Brawl::Wall", location: {x:-1, y:0}}
+      arena.ping(x:-1,y:0).select{|k,_|[:class,:location].include? k}.should ==
+        {class: Brawl::Wall, location: {x:-1, y:0}}
     end
 
     it "should return nothing for areas outside the wall" do
       # note that corners can't be "seen" from inside the arena so are not walls
       arena.ping(x:-1,y:-1).should    be_nil
-      arena.ping(x:100,y:100).should  be_nil
-      arena.ping(x:-1,y:100).should   be_nil
-      arena.ping(x:100,y:-1).should   be_nil
+      arena.ping(x:10,y:10).should  be_nil
+      arena.ping(x:-1,y:10).should   be_nil
+      arena.ping(x:10,y:-1).should   be_nil
       arena.ping(x:0,y:101).should    be_nil
-      arena.ping(x:101,y:0).should    be_nil
-      arena.ping(x:101,y:101).should  be_nil
+      arena.ping(x:11,y:0).should    be_nil
+      arena.ping(x:11,y:11).should  be_nil
     end
 
   end
