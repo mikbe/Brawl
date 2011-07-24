@@ -3,7 +3,7 @@ require "bigdecimal/math"
 
 include BigMath
 
-def to_radian(angle)
+def to_radians(angle)
   big_angle = BigDecimal(angle.to_s)
   big_angle * (PI(100) / 180.0)
 end
@@ -16,7 +16,7 @@ end
 
 angle = -320
 puts "angle: #{angle}"
-radians = to_radian angle
+radians = to_radians angle
 sin = Math.sin(radians).abs
 puts "rad:   #{radians}"
 puts "sin:   #{sin}"

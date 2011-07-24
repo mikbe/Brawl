@@ -65,7 +65,6 @@ end
 module Foo
   attr_accessor :baz
   def initialize(params={})
-    #puts "Foo init"
     @baz = params[:baz]
   end
   def bar
@@ -76,7 +75,6 @@ end
 module Qux
   attr_accessor :quux
   def initialize(params={})
-    #puts "Qux init"
     @quux = params[:quux]
   end
   def phoo

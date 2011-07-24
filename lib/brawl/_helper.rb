@@ -4,11 +4,11 @@ module Brawl
 
   class Helper
 
-    def self.to_radian(angle)
+    def self.to_radians(angle)
       angle * (Math::PI / 180)
     end
 
-    def self.to_degree(angle)
+    def self.to_degrees(angle)
       angle * (180.0 / Math::PI)
     end
 
@@ -38,38 +38,32 @@ module Brawl
       x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
 
       # no point in continuing if the target is out of range
-      distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
-      return false if distance > radius
+      distance_to_target = distance(origin, point)
+      return false if distance_to_target > radius
 
-      heading_to_target = Math.atan2(x2 - x1, y2 - y1)
+      bearing_to_target = Math.atan2(x2 - x1, y2 - y1)
 
-      min_cone_angle = to_radian((direction - (angle / 2)) % 360)
-      max_cone_angle = to_radian((direction + (angle / 2)) % 360)
+      min_cone_angle = to_radians((direction - (angle / 2)) % 360)
+      max_cone_angle = to_radians((direction + (angle / 2)) % 360)
 
       # Check if the heading to the target is inside the scan angle
-      if min_cone_angle > max_cone_angle
-        heading_to_target >= min_cone_angle ||
-         heading_to_target <= max_cone_angle
-      else
-        heading_to_target >= min_cone_angle && 
-          heading_to_target <= max_cone_angle
+      greater_than = bearing_to_target >= min_cone_angle
+      less_than    = bearing_to_target <= max_cone_angle
+
+      if (min_cone_angle > max_cone_angle && (greater_than || less_than)) ||
+        (min_cone_angle <= max_cone_angle && (greater_than && less_than))
+        
+        { distance: distance_to_target.round(DECIMAL_PLACES), 
+          bearing: to_degrees(bearing_to_target)} 
+        
       end
     end
 
-    def self.points_surrounding_rectangle(width, length)
-      points = []
-      #left and right
-      (length).times do |y| 
-        points << {x: - 1, y: y}
-        points << {x: width + 1, y: y}
-      end
-      #top & bottom
-      (width+2).times do |x| 
-        points << {x: x - 1, y: - 1}
-        points << {x: x - 1, y: length + 1}
-      end
-      points
+    def self.distance(point1, point2)
+      x1, y1, x2, y2 = point1[:x], point1[:y], point2[:x], point2[:y]
+      distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
     end
+
   end
 
 end

@@ -1,5 +1,3 @@
-require 'set'
-
 module Brawl
   module BasicScanner
     include BasicPart
@@ -15,7 +13,6 @@ module Brawl
 
     def scan(params={})
       angle       = [@angle_max, params[:angle] ||= @angle_max].min
-      contacts    = []
 
       cone = {
         origin:     @location,
@@ -24,15 +21,11 @@ module Brawl
         angle:      angle,
       }
 
-      @arena.get_all_objects.each do |object|
-        unless object[:id] == @id
-          if Helper.point_in_cone?(cone.merge(point: object[:location]))
-            contacts << object
-          end
-        end
+      @arena.get_all_objects.select do |object|
+        object[:id] != @id &&
+          Helper.point_in_cone?(cone.merge(point: object[:location]))
       end
-
-      contacts
+      
     end
   
   end

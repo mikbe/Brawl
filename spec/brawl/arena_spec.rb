@@ -125,12 +125,12 @@ describe Brawl::Arena do
 
     it "should return nothing for areas outside the wall" do
       # note that corners can't be "seen" from inside the arena so are not walls
-      arena.ping(x:-1,y:-1).should    be_nil
+      arena.ping(x:-1,y:-1).should  be_nil
       arena.ping(x:10,y:10).should  be_nil
-      arena.ping(x:-1,y:10).should   be_nil
-      arena.ping(x:10,y:-1).should   be_nil
-      arena.ping(x:0,y:101).should    be_nil
-      arena.ping(x:11,y:0).should    be_nil
+      arena.ping(x:-1,y:10).should  be_nil
+      arena.ping(x:10,y:-1).should  be_nil
+      arena.ping(x:0,y:101).should  be_nil
+      arena.ping(x:11,y:0).should   be_nil
       arena.ping(x:11,y:11).should  be_nil
     end
 

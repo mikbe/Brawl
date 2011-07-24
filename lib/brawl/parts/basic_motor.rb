@@ -6,13 +6,13 @@ module Brawl
     attr_reader :move_max, :turn_max
     
     def initialize(params={})
-      set :move_max,  2, params
+      set :move_max,  5, params
       set :turn_max, 90, params
     end
 
     def move(count=1)
 
-      heading_radian = Helper.to_radian((@heading + (count < 0 ? 180 : 0)))
+      heading_radian = Helper.to_radians((@heading + (count < 0 ? 180 : 0)))
       count = count.abs
       count = [count, @move_max].min
       
