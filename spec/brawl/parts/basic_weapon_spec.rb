@@ -110,6 +110,17 @@ describe Brawl::BasicWeapon do
       bot.reload_countdown.should be_approximately(bot.reload_time-4).within(1)
     end
 
+    it "should not fire when the reload countdown is still going" do
+      bot.shoot 90
+      enemy = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 6.0, y: 6.0},
+        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
+      )
+      bot.shoot(45).should == false
+      
+    end
+
   end
 
 end

@@ -1,7 +1,7 @@
 module Brawl
   
   class Wall < BasicArenaObject
-    def damage
+    def damage(params={})
       # walls can't be damaged
     end
   end

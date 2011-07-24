@@ -13,6 +13,7 @@ module Brawl
     end
 
     def shoot(direction=@heading)
+      return false if reload_countdown > 0
       @reload_countdown = @reload_time + @arena.tick
       cone = {
         origin: @location, 
