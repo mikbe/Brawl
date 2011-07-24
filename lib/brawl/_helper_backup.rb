@@ -1,14 +1,23 @@
+# require "bigdecimal"
+# require "bigdecimal/math"
+
 module Brawl
 
   DECIMAL_PLACES  = 1
 
   class Helper
 
+    #extend BigMath
+
     def self.to_radian(angle)
+      # big_angle = BigDecimal(angle.to_s)
+      # big_angle * (PI(100) / 180.0)
       angle * (Math::PI / 180)
     end
 
     def self.to_degree(angle)
+      # big_angle = BigDecimal(angle.to_s)
+      # big_angle * (180.0 / PI(100))
       angle * (180.0 / Math::PI)
     end
 
@@ -24,21 +33,15 @@ module Brawl
 
     def self.point_in_cone?(params)
 
-      # the point where the cone starts
-      origin    = params[:origin]
-      # the "length" of the one
       radius    = params[:radius]
-      # how "wide" the cone is
       angle     = params[:angle]
-      # the center angle of the cone
       direction = params[:direction]
-      
-      # the point under test
-      point     = params[:point]
+      origin    = params[:origin]
+      point     = params[:point] # refactor : bad name
       
       x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
 
-      # no point in continuing if the target is out of range
+      # no point in scanning if the target is out of range
       distance = Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
       return false if distance > radius
 
