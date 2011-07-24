@@ -7,12 +7,12 @@ module Brawl
     DECIMAL_PLACES  = 1
     
     def initialize(params={})
-      set :scan_max, nil, params
-      set :angle_max, nil, params
+      set :scan_max,  10, params
+      set :angle_max, 45, params
     end
 
     def scan(params={})
-      angle       = [@angle_max, params[:angle] ||= @angle_max].min
+      angle = [@angle_max, params[:angle] ||= @angle_max].min
 
       cone = {
         origin:     @location,

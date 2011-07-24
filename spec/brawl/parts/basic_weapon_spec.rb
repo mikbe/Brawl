@@ -1,20 +1,14 @@
 require 'spec_helper'
 
 describe Brawl::BasicWeapon do
-    
-  let(:arena){Brawl::Arena.new(size: {width: 10, length: 10})}
+
+  let(:clock){clock = Brawl::Clock.new(0.1)}
+  let(:arena){Brawl::Arena.new(size: {width: 10, length: 10}, clock: clock)}
   let(:bot) do
     Brawl::BasicBot.new(
       arena: arena,
       location: {x: 5.0, y: 5.0},
       parts: {Brawl::BasicWeapon=>{range: 3, power: 1}}
-    )
-  end
-  let(:enemy) do
-    Brawl::BasicBot.new(
-      arena: arena,
-      location: {x: 6.0, y: 6.0},
-      parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
     )
   end
 
@@ -38,7 +32,7 @@ describe Brawl::BasicWeapon do
       bot.shoot(90)[:class].should == Brawl::Wall
     end
 
-    it "should nothing on a miss" do
+    it "should return nothing on a miss" do
       bot = Brawl::BasicBot.new(
         arena: arena,
         location: {x: 5.0, y: 5.0},
@@ -53,53 +47,69 @@ describe Brawl::BasicWeapon do
         location: {x: 5.0, y: 6.0},
         parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
       )
-      bot = Brawl::BasicBot.new(
-        arena: arena,
-        location: {x: 5.0, y: 5.0},
-        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
-      )
       enemy2 = Brawl::BasicBot.new(
         arena: arena,
         location: {x: 5.0, y: 7.0},
+        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
+      )
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 5.0, y: 5.0},
         parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
       )
       
       bot.shoot(0).should == 
         enemy1.properties.merge(distance:1.0, bearing:0.0)
       
-      
     end
 
-    # it "should start the reload_countdown when firing" do
-    #   expect{weapon.shoot at: 45}.should change(weapon, :reload_countdown).
-    #     from(0.0)
-    # end
-    # 
-    # it "should set the countdown based on the #reload_time" do
-    #   weapon.shoot at: 45
-    #   weapon.reload_countdown.should be_approximately(weapon.reload_time).within(0.02)
-    # end
-    # 
-    # it "should adjust the countdown timer based on how long it's been since it was last shootd" do
-    #   weapon.shoot at: 45
-    #   sleep(0.2)
-    #   weapon.reload_countdown.should be_approximately(weapon.reload_time).within(0.22)
-    # end
-    # 
-    # it "should return true if it hits an enemy" do
-    #   bot.stub!(:location).and_return({x: 5.0, y: 0.0})
-    #   bot.stub!(:heading).and_return(0)
-    #   enemy.stub!(:location).and_return({x: 5.0, y: 1.0})
-    #   weapon.shoot(at: 0).should be_true
-    # end
-    # 
-    # it "should return false if it doesn't hit an enemy" do
-    #   bot.stub!(:location).and_return({x: 5.0, y: 0.0})
-    #   bot.stub!(:heading).and_return(0)
-    #   enemy.stub!(:location).and_return({x: 5.0, y: 1.0})
-    #   weapon.shoot(at: 90).should be_false
-    # end
-    # 
+    it "should damage an enemy" do
+      enemy = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 5.0, y: 6.0},
+        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
+      )
+      expect{bot.shoot}.should change(enemy, :health).by(-1)
+    end
+    
+    it "should not affect a wall" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 5.0, y: 9.0},
+        parts: {Brawl::BasicWeapon=>{range: 3, power: 1}}
+      )
+      puts bot.shoot
+    end
+    
   end
-  
+
+  context "when reloading" do
+
+    it "should start the reload_countdown when firing" do
+      expect{bot.shoot}.should change(bot, :reload_countdown).from(0)
+    end
+    
+    it "should set the countdown based on the #reload_time" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 9.0, y: 5.0},
+        parts: {Brawl::BasicWeapon=>{range: 2, power: 1, reload_time: 10}}
+      )
+      expect{bot.shoot}.should change(bot, :reload_countdown).to(10)
+    end
+    
+    it "should count down based on clock ticks since last shot" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        parts: {Brawl::BasicWeapon=>{range: 2, power: 1, reload_time: 10}}
+      )
+      clock.start
+      bot.shoot
+      sleep(0.3)
+      clock.stop
+      bot.reload_countdown.should be_approximately(bot.reload_time-4).within(1)
+    end
+
+  end
+
 end

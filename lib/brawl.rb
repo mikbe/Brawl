@@ -2,6 +2,8 @@ require "brawl/version"
 
 require "brawl/_helper"
 
+require "brawl/clock"
+
 require "brawl/basic_arena_object"
 require "brawl/wall"
 

@@ -29,4 +29,12 @@ describe Brawl::BasicArenaObject do
     object.properties.should be_a(Hash)
   end
 
+  it "should reduce its health based on damage received" do
+    expect{object.damage(1)}.should change(object, :health).by(-1)
+  end
+
+  it "should never reduce health to less than 0" do
+    expect{object.damage(100)}.should change(object, :health).to(0)
+  end
+
 end

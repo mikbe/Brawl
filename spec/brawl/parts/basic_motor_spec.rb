@@ -6,7 +6,7 @@ describe Brawl::BasicMotor do
   let(:bot) do 
     Brawl::BasicBot.new(
       arena: arena, 
-      parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
+      parts: {Brawl::BasicMotor=>{move_max: 1, turn_max: 360}}
     )
   end
 
@@ -36,7 +36,7 @@ describe Brawl::BasicMotor do
     it "should not move more than the maximum allowed" do
       expect{bot.move 5}.should change(bot, :location).
        from({x: 0.0, y: 0.0}).
-       to({x: 0.0, y: 3.0})
+       to({x: 0.0, y: 1.0})
     end
 
     it "should not move into walls" do
@@ -72,7 +72,7 @@ describe Brawl::BasicMotor do
 
 
   end
-    
+
   context "when turning" do
 
     context "and given an angle" do

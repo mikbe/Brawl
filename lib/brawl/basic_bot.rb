@@ -35,6 +35,7 @@ module Brawl
       return unless parts
       parts.each do |part_module, init_params|
         params.merge! init_params
+        # make sure we can fire the module's initialize method
         part_module.send :alias_method, :initialize_parts, :initialize
         extend part_module
       end

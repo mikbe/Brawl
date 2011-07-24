@@ -6,6 +6,14 @@ describe Brawl::Arena do
   let(:object1){Brawl::BasicArenaObject.new}
   let(:object2){Brawl::BasicArenaobject.new}
 
+  context "when initializing" do
+    
+    it "should start the clock automatically" do
+      arena = Brawl::Arena.new(size: {width: 100, length: 100})
+      expect{sleep(0.1)}.should change(arena, :tick)
+    end
+  end
+
   context "when determining size" do
 
     it "should set the size when initialized" do
@@ -134,6 +142,15 @@ describe Brawl::Arena do
       arena.ping(x:11,y:11).should  be_nil
     end
 
+  end
+
+  context "when damage occurs" do
+    
+    it 'should forward damage to the damamge object' do
+      expect{arena.forward_damage(damage: 1, target: object1.id)}.should
+        change(object1, :health).by(-1)
+    end
+    
   end
 
 end

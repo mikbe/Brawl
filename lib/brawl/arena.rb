@@ -7,6 +7,8 @@ module Brawl
     def initialize(params={})
       @size     = params[:size]
       @objects  = []
+      @clock    = params[:clock] || Clock.new
+      @clock.start
       add_walls
     end
 
@@ -16,6 +18,10 @@ module Brawl
 
     def width
       @size[:width]
+    end
+
+    def tick
+      @clock.tick
     end
 
     def add_object(object)
@@ -68,6 +74,11 @@ module Brawl
       get_object(location: location)
     end
 
+    def forward_damage(params)
+      target = @objects.select{|object| object.id == params[:target]}.first
+      target.damage(params[:damage])
+    end
+    
     private 
     
     def add_walls
