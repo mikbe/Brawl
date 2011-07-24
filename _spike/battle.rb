@@ -65,7 +65,7 @@ module Brawl
 
     def start
       @run = true
-      # for security in production will use a process fork but for now...
+      # for security in produciton will use a process fork but for now...
       Thread.start {
         # wait for command sync to start
         until @sync.run == :stop || !@run
@@ -105,6 +105,8 @@ module Brawl
       @bot_proxies = []
       bots.each do |bot|
         puts "add: #{bot[:name]}, #{bot[:class]}"
+        bot[:parameters].merge!(location: {x: rand(100), y:rand(100)})
+        
         bot_instance = bot[:class].new(bot[:parameters].merge(arena: @arena))
         @bot_proxies << {
           name:  bot[:name],
@@ -140,38 +142,31 @@ arena = {
   }
 }
 
+bot_code = <<-CODE
+code do |bot|
+  if rand(0) > 0.5
+    bot.turn [:left,:right,:around].sample
+  end
+  bot.move rand(3) + 1
+end
+CODE
+
 bots = [
   { name: "BasicBot1",
     class: BasicBot,
     parameters: {
       arena: arena,
-      location: {x: 50, y:50},
       parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
     },
-    code:<<-CODE
-    code do |bot|
-      if rand(0) > 0.5
-        bot.turn [:right, :left].sample
-      end
-      bot.move rand(3) + 1
-    end
-    CODE
+    code:bot_code
   },
   { name: "BasicBot2",
     class: BasicBot,
     parameters: {
       arena: arena,
-      location: {x: 50, y:50},
       parts: {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
     },
-    code:<<-CODE
-    code do |bot|
-      if rand(0) > 0.5
-        bot.turn [:right, :left].sample
-      end
-      bot.move rand(3) + 1
-    end
-    CODE
+    code:bot_code
   }
 ]
 
