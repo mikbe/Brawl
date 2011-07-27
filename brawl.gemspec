@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.summary     = %q{A work in progress}
   s.description = %q{nothing to see here, move along}
 
-  s.rubyforge_project = "brawl"
   s.add_dependency "uuidtools"
+  s.add_dependency "eventable"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

@@ -124,8 +124,12 @@ describe Brawl::BattleController do
 
       bot_data = [helpless_bot1, battle_bot1]
       battle.make_bots(bot_data)
+      puts "victory? #{battle.victory?}"
       battle.start
-      sleep(1)
+      until battle.victory?
+        sleep(0.5)
+      end
+      puts "victory? #{battle.victory?}"
     end
 
   end

@@ -1,10 +1,15 @@
 require 'forwardable'
 require 'uuidtools'
+require 'eventable'
 
 module Brawl
-  
+
   class BasicBot < BasicArenaObject
     extend Forwardable
+
+    include Eventable
+    event :bot_ran_method
+    event :bot_damaged
 
     attr_reader :parts
 
@@ -15,17 +20,18 @@ module Brawl
       @parts = params[:parts]
 
       add_parts(@parts, params)
+      hook_methods_for_listeners
 
       super
 
       @arena.add_object(self)
     end
 
-    # properties that can be 'seen' in the arena
-    def properties
-      @properties.each_with_object({}) do |property, hash|
-        hash[property] = self.send(property)
-      end
+    def damage(damage_points)
+      super
+      fire_event(:bot_damaged, 
+        properties.merge(health: @health, damage: damage_points)
+      )
     end
 
     private
@@ -40,7 +46,20 @@ module Brawl
         initialize_parts(params)
       end
     end
-    
+
+    def hook_methods_for_listeners
+      public_methods(false).each do |method|
+        next if method == :properties
+        singleton_class.send :alias_method, "_hook_#{method}", method
+
+        singleton_class.send :define_method, method do |*params, &block|
+          fire_event(:bot_ran_method, method, *params)
+          send "_hook_#{method}".to_sym, *params, &block
+        end
+
+      end
+    end
+
   end
 
 end

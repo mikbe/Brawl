@@ -24,17 +24,11 @@ module Brawl
       end
     end
     
-    def damage(hitpoints)
-      @health -= hitpoints
+    def damage(damage_points)
+      @health -= damage_points
       @health < 0 ? @health = 0 : @health
     end
-    
-    protected
-    
-    def set(property, default, params={})
-      instance_variable_set("@#{property}", params[property] || default)
-    end
-
+ 
   end
 
 end

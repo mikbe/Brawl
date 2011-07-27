@@ -8,10 +8,10 @@ module Brawl
       @clock      = params[:clock]
       @bot        = params[:bot]
       @code       = params[:code]
-      
+
       @last_tick  = @clock.ticks
       @run        = false
-      
+
       add_proxy_methods
     end
 
@@ -23,15 +23,15 @@ module Brawl
       # I'm sure there's a better way of doing this
       combined_methods = @bot.public_methods(false)
       combined_methods.concat BasicArenaObject.instance_methods(false)
-      
+
       combined_methods.each do |method|
-        
+        next if method.to_s[0] == "_"
         singleton_class.send :define_method, method do |*params, &block|
           sleep(0.01) while @clock.ticks <= @last_tick
           @last_tick = @clock.ticks
           @bot.send method, *params, &block
         end
-        
+
       end
     end
 

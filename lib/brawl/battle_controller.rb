@@ -1,7 +1,12 @@
+require 'eventable'
+
 module Brawl
 
   class BattleController
 
+    include Eventable
+    event :bot_msg
+    
     attr_accessor :arena, :bots, :clock
 
     def initialize(params = {})
@@ -42,6 +47,17 @@ module Brawl
         bot_params.merge!(location)
 
         bot_instance  = bot_datum[:class].new(bot_params)
+        
+        bot_instance.register_for_event(
+          event:    :bot_ran_method, 
+          listener: self, 
+          callback: :bot_msg_callback
+        )
+        bot_instance.register_for_event(
+          event:    :bot_damaged, 
+          listener: self, 
+          callback: :bot_msg_callback
+        )
 
         bot_proxy = BotProxy.new(
           clock:  clock,
@@ -54,6 +70,15 @@ module Brawl
           proxy: bot_proxy
         }
       end
+    end
+
+    def bot_msg_callback(*params, &block)
+      puts *params.inspect
+      fire_event(:bot_msg, *params, &block)
+    end
+
+    def victory?
+      arena.victory?
     end
 
     def start
