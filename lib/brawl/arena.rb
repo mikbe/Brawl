@@ -90,6 +90,9 @@ module Brawl
     def victory?
       @objects.one? do |object|
         object.class != Wall && object.health > 0
+      end ||
+      @objects.none? do |object|
+        object.class != Wall && object.health > 0
       end
     end
 

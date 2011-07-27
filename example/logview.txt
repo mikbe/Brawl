@@ -1,0 +1,107 @@
+
+Battle Bot 1 at {:x=>25, :y=>33} scans {:direction=>0, :angle=>90}
+
+Battle Bot 2 at {:x=>25, :y=>41} scans {:direction=>0, :angle=>90}
+
+Battle Bot 2 at {:x=>25, :y=>41} scans {:direction=>45, :angle=>90}
+
+Battle Bot 1 at {:x=>25, :y=>33} shoots at bearing 0.0.
+
+Battle Bot 3 at {:x=>31, :y=>20} scans {:direction=>0, :angle=>90}
+
+Battle Bot 4 at {:x=>20.0, :y=>5.0} scans {:direction=>0, :angle=>90}
+
+Battle Bot 2 at {:x=>25, :y=>41} was hit for 1 damage and now has 0 health
+Battle Bot 2 is dead!
+
+Battle Bot 1 at {:x=>25, :y=>33} scans {:direction=>45, :angle=>90}
+
+Battle Bot 4 at {:x=>20.0, :y=>5.0} moves 2
+
+Battle Bot 4 at {:x=>20.0, :y=>5.0} scans {:direction=>45, :angle=>90}
+
+Battle Bot 1 at {:x=>25.0, :y=>34.0} moves 1
+
+Battle Bot 3 at {:x=>30.0, :y=>20.0} moves 1
+
+Battle Bot 3 at {:x=>30.0, :y=>20.0} scans {:direction=>45, :angle=>90}
+
+Battle Bot 1 at {:x=>25.0, :y=>34.0} scans {:direction=>90, :angle=>90}
+
+Battle Bot 4 at {:x=>20.0, :y=>7.0} moves 2
+
+Battle Bot 3 at {:x=>29.0, :y=>20.0} moves 1
+
+Battle Bot 1 at {:x=>25.0, :y=>35.0} moves 1
+
+Battle Bot 4 at {:x=>20.0, :y=>7.0} scans {:direction=>90, :angle=>90}
+
+Battle Bot 3 at {:x=>29.0, :y=>20.0} scans {:direction=>90, :angle=>90}
+
+Battle Bot 1 at {:x=>25.0, :y=>35.0} scans {:direction=>135, :angle=>90}
+
+Battle Bot 4 at {:x=>20.0, :y=>10.0} moves 3
+
+Battle Bot 4 at {:x=>20.0, :y=>10.0} scans {:direction=>135, :angle=>90}
+
+Battle Bot 3 at {:x=>27.0, :y=>20.0} moves 2
+
+Battle Bot 4 at {:x=>20.0, :y=>12.0} moves 2
+
+Battle Bot 4 at {:x=>20.0, :y=>12.0} scans {:direction=>180, :angle=>90}
+
+Battle Bot 3 at {:x=>27.0, :y=>20.0} scans {:direction=>135, :angle=>90}
+
+Battle Bot 1 at {:x=>27.0, :y=>35.0} moves 2
+
+Battle Bot 1 at {:x=>27.0, :y=>35.0} scans {:direction=>180, :angle=>90}
+
+Battle Bot 3 at {:x=>24.0, :y=>20.0} moves 3
+
+Battle Bot 1 at {:x=>27.0, :y=>33.0} moves 2
+
+Battle Bot 4 at {:x=>19.0, :y=>12.0} moves 1
+
+Battle Bot 3 at {:x=>24.0, :y=>20.0} scans {:direction=>180, :angle=>90}
+
+Battle Bot 4 at {:x=>19.0, :y=>12.0} scans {:direction=>225, :angle=>90}
+
+Battle Bot 1 at {:x=>27.0, :y=>33.0} scans {:direction=>225, :angle=>90}
+
+Battle Bot 3 at {:x=>24.0, :y=>20.0} shoots at bearing 212.0.
+
+Battle Bot 4 at {:x=>19.0, :y=>12.0} was hit for 1 damage and now has 0 health
+Battle Bot 4 is dead!
+
+Battle Bot 3 at {:x=>24.0, :y=>20.0} scans {:direction=>225, :angle=>90}
+
+Battle Bot 1 at {:x=>26.0, :y=>33.0} moves 1
+
+Battle Bot 3 at {:x=>26.0, :y=>20.0} moves 2
+
+Battle Bot 1 at {:x=>26.0, :y=>33.0} scans {:direction=>270, :angle=>90}
+
+Battle Bot 3 at {:x=>26.0, :y=>20.0} scans {:direction=>270, :angle=>90}
+
+Battle Bot 3 at {:x=>29.0, :y=>20.0} moves 3
+
+Battle Bot 3 at {:x=>29.0, :y=>20.0} scans {:direction=>315, :angle=>90}
+
+Battle Bot 1 at {:x=>26.0, :y=>32.0} moves 1
+
+Battle Bot 1 at {:x=>26.0, :y=>32.0} scans {:direction=>315, :angle=>90}
+
+Battle Bot 3 at {:x=>30.0, :y=>20.0} moves 1
+
+Battle Bot 1 at {:x=>26.0, :y=>29.0} moves 3
+
+Battle Bot 3 at {:x=>30.0, :y=>20.0} scans {:direction=>0, :angle=>90}
+
+Battle Bot 1 at {:x=>26.0, :y=>29.0} scans {:direction=>0, :angle=>90}
+
+Battle Bot 3 at {:x=>30.0, :y=>20.0} shoots at bearing 336.0.
+
+Battle Bot 1 at {:x=>26.0, :y=>29.0} was hit for 1 damage and now has 0 health
+Battle Bot 1 is dead!
+Battle won!
+Battle Bot 3 is the champion!

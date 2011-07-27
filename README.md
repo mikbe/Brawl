@@ -28,11 +28,11 @@ This is a really dumb robot that just scans for enemies and shoots at them. If i
       targets = bot.scan direction: @dir, angle: 90
       @dir += 45
       @dir %= 360
-      if targets.each do |target|
+      unless targets.each do |target|
           unless target[:class] == Brawl::Wall
             results = shoot(target[:bearing])
           end
-        end
+        end.empty?
       else
         if rand(0) > 0.5
           bot.turn [:left,:right,:around].sample

@@ -38,7 +38,7 @@ module Brawl
     def start
       @run = true
       Thread.start {
-        until @clock.state == :stopped || !@run
+        until @clock.state == :stopped || !@run || @health == 0
           sleep(0.01) if @clock.state == :wait
           if @clock.state == :running
             instance_eval("Thread.start{$SAFE=3;#{@code}}.join")

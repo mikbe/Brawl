@@ -42,7 +42,8 @@ module Brawl
         bot_params = bot_datum[:params]
 
         bot_params.merge!(arena: arena)
-
+        bot_params.merge!(name: bot_datum[:name])
+        
         location = {location: {x: rand(arena.width), y:rand(arena.length)}}
         bot_params.merge!(location)
 

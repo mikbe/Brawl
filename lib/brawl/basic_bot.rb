@@ -29,9 +29,12 @@ module Brawl
 
     def damage(damage_points)
       super
-      fire_event(:bot_damaged, 
-        properties.merge(health: @health, damage: damage_points)
+      fire_event(:bot_damaged,
+        properties,
+        :damage,
+        damage_points
       )
+      @arena.remove_object(self) if @health <= 0
     end
 
     private
@@ -49,11 +52,12 @@ module Brawl
 
     def hook_methods_for_listeners
       public_methods(false).each do |method|
-        next if method == :properties
+        next if [:properties,:damage].include?(method)
         singleton_class.send :alias_method, "_hook_#{method}", method
 
         singleton_class.send :define_method, method do |*params, &block|
-          fire_event(:bot_ran_method, method, *params)
+          return if @health <= 0
+          fire_event(:bot_ran_method, properties, method, *params)
           send "_hook_#{method}".to_sym, *params, &block
         end
 

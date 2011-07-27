@@ -10,11 +10,12 @@ module Brawl
     def initialize(params={})
       @clock      = params[:clock]
       @id         = params[:id] || UUIDTools::UUID.timestamp_create.to_s
+      @name       = params[:name] || self.object_id
       @location   = params[:location] || {x: 0, y: 0}
       @heading    = params[:heading] || 0
       @health     = params[:health] || 1
       @properties = params[:properties] || 
-        [:id, :name, :class, :location, :heading]
+        [:id, :name, :class, :location, :health, :heading]
     end
 
     # properties are values that are OK to be publicly 'seen' in the arena
