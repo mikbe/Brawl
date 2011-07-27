@@ -160,8 +160,12 @@ until battle.victory?
 end
 
 winner = battle.arena.get_object(class: Brawl::BasicBot)
+if winner
+  done_text = "Battle won!\n#{winner[:name]} is the champion!"
+else
+  done_text = "Battle draw! The last two bots killed other simultaniously! Doh!"
+end 
 
-done_text = "Battle won!\n#{winner[:name]} is the champion!"
 puts
 puts done_text
 log.write
