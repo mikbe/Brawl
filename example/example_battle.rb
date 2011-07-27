@@ -23,7 +23,7 @@ code do |bot|
 end
 CODE
 
-arena_data = {size: {width: 50, length: 50}}
+arena_data = {size: {width: 10, length: 10}}
 clock_data = {tick_rate: 0.01}
 
 motor   = {Brawl::BasicMotor=>{move_max: 3, turn_max: 360}}
