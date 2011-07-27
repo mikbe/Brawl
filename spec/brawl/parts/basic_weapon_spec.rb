@@ -13,21 +13,50 @@ describe Brawl::BasicWeapon do
   end
 
   context "when firing" do
-
+    
+    it "should return enemy properties on a hit" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 1, y: 0},
+        parts: {Brawl::BasicWeapon=>{range: 20, power: 1}}
+      )
+      enemy = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 8, y: 1},
+        parts: {Brawl::BasicWeapon=>{range: 20, power: 1}}
+      )
+      bot.shoot(82).should_not be_nil
+    end
+    
+    it "should return enemy properties on a hit" do
+      bot = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 6, y: 1},
+        parts: {Brawl::BasicWeapon=>{range: 20, power: 1}}
+      )
+      enemy = Brawl::BasicBot.new(
+        arena: arena,
+        location: {x: 1, y: 4},
+        parts: {Brawl::BasicWeapon=>{range: 20, power: 1}}
+      )
+      bot.shoot(301).should_not be_nil
+    end
+    
     it "should return enemy properties on a hit" do
       enemy = Brawl::BasicBot.new(
         arena: arena,
-        location: {x: 6.0, y: 6.0},
-        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
+        location: {x: 6, y: 6},
+        parts: {Brawl::BasicWeapon=>{range: 50, power: 1}}
       )
-      bot.shoot(45).should == enemy.properties.merge(distance:1.4, bearing:45.0)
+      bot.shoot(45).should == 
+      enemy.properties.merge(distance:1.4, bearing:45.0)
     end
 
     it "should return wall properites on a hit" do
       bot = Brawl::BasicBot.new(
         arena: arena,
         location: {x: 9.0, y: 5.0},
-        parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
+        parts: {Brawl::BasicWeapon=>{range: 3, power: 1}}
       )
       bot.shoot(90)[:class].should == Brawl::Wall
     end
@@ -57,9 +86,7 @@ describe Brawl::BasicWeapon do
         location: {x: 5.0, y: 5.0},
         parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
       )
-      
-      bot.shoot(0).should == 
-        enemy1.properties.merge(distance:1.0, bearing:0.0)
+      bot.shoot(0).should == enemy1.properties.merge(distance:1.0, bearing:0.0)
       
     end
 
@@ -70,15 +97,6 @@ describe Brawl::BasicWeapon do
         parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
       )
       expect{bot.shoot}.should change(enemy, :health).by(-1)
-    end
-    
-    it "should not affect a wall" do
-      bot = Brawl::BasicBot.new(
-        arena: arena,
-        location: {x: 5.0, y: 9.0},
-        parts: {Brawl::BasicWeapon=>{range: 3, power: 1}}
-      )
-      puts bot.shoot
     end
     
   end
@@ -107,7 +125,7 @@ describe Brawl::BasicWeapon do
       bot.shoot
       sleep(0.3)
       clock.stop
-      bot.reload_countdown.should be_approximately(bot.reload_time-4).within(1)
+      bot.reload_countdown.should be_within(5.1).of(bot.reload_time)
     end
 
     it "should not fire when the reload countdown is still going" do

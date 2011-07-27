@@ -49,7 +49,8 @@ describe Brawl::BasicScanner do
         location: {x: 5, y: 6},
         parts: {Brawl::BasicScanner=>{scan_max: 1, angle_max: 180}}
       )
-      bot.scan(direction: 0, angle: 1).should include(enemy.properties)
+      scan = bot.scan(direction: 0, angle: 1)
+      scan.any?{|contact| contact[:id] = enemy.id}
     end 
 
     it "should not find enemies if out of range" do
@@ -77,7 +78,8 @@ describe Brawl::BasicScanner do
         location: {x: 5, y: 7},
         parts: {Brawl::BasicScanner=>{scan_max: 10, angle_max: 180}}
       )
-      bot.scan(direction: 0, angle: 180).should include(enemy.properties)
+      scan = bot.scan(direction: 0, angle: 180)
+      scan.any?{|contact| contact[:id] = enemy.id}
     end
 
     it "should find enemies to the side with a wide scan" do
@@ -91,7 +93,8 @@ describe Brawl::BasicScanner do
         location: {x: 7, y: 7},
         parts: {Brawl::BasicScanner=>{scan_max: 10, angle_max: 180}}
       )
-      bot.scan(direction: 0, angle: 180).should include(enemy.properties)
+      scan = bot.scan(direction: 0, angle: 180)
+      scan.any?{|contact| contact[:id] = enemy.id}
     end  
   end
 

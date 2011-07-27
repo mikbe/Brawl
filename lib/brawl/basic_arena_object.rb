@@ -4,16 +4,17 @@ module Brawl
 
   class BasicArenaObject
 
-    attr_reader   :id, :clock
+    attr_reader   :id, :clock, :name
     attr_accessor :location, :heading, :health
 
     def initialize(params={})
-      set :clock, nil, params
-      set :id, UUIDTools::UUID.timestamp_create.to_s, params
-      set :location, {x: 0, y: 0}, params
-      set :heading, 0, params
-      set :health, 1, params
-      set :properties, [:id, :class, :location, :heading]
+      @clock      = params[:clock]
+      @id         = params[:id] || UUIDTools::UUID.timestamp_create.to_s
+      @location   = params[:location] || {x: 0, y: 0}
+      @heading    = params[:heading] || 0
+      @health     = params[:health] || 1
+      @properties = params[:properties] || 
+        [:id, :name, :class, :location, :heading]
     end
 
     # properties are values that are OK to be publicly 'seen' in the arena

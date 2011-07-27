@@ -59,7 +59,6 @@ describe Brawl::BasicBot do
     bot.phoo.should == {x: 11.0, y: 222.0}
   end
 
-
 end
 
 module Foo

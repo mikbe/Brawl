@@ -2,12 +2,12 @@ module Brawl
   
   class Clock
     
-    attr_reader :tick_rate, :tick
+    attr_reader :tick_rate, :ticks, :state
     
     def initialize(tick_rate=0.05)
-      @tick_rate = tick_rate
-      @state = :stopped
-      @tick = 0
+      @tick_rate  = tick_rate
+      @state      = :wait
+      @ticks      = 0
     end
     
     def start
@@ -25,7 +25,7 @@ module Brawl
       Thread.start {
         while @state == :running
           sleep(@tick_rate)
-          @tick += 1
+          @ticks += 1
         end
         @state = :stopped
       }

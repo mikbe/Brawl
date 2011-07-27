@@ -11,5 +11,6 @@ require "brawl/arena"
 
 require "brawl/basic_bot"
 require "brawl/parts"
+require "brawl/bot_proxy"
 
 require "brawl/battle_controller"

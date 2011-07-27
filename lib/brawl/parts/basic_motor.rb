@@ -1,13 +1,12 @@
 module Brawl
 
   module BasicMotor
-    include BasicPart
     
     attr_reader :move_max, :turn_max
     
     def initialize(params={})
-      set :move_max,  5, params
-      set :turn_max, 90, params
+      @move_max = params[:move_max] || 5
+      @turn_max = params[:turn_max] || 90
     end
 
     def move(count=1)

@@ -1,25 +1,26 @@
 module Brawl
   module BasicWeapon
-    include BasicPart
     
     attr_reader :range, :reload_time, :power
     
     def initialize(params={})
-      set :reload_time, 10, params
-      set :range, 10, params
-      set :power, 1, params
 
+      @reload_time  = params[:reload_time]  || 10
+      @range        = params[:range]        || 10
+      @power        = params[:power]        || 1
+      
       @reload_countdown = 0
     end
 
     def shoot(direction=@heading)
       return false if reload_countdown > 0
-      @reload_countdown = @reload_time + @arena.tick
+      @reload_countdown = @reload_time + @arena.ticks
+
       cone = {
         origin: @location, 
         direction: direction, 
         radius: @range, 
-        angle: 1
+        angle: 2
       }
 
       # refactor
@@ -38,8 +39,8 @@ module Brawl
     end
 
     def reload_countdown
-      return 0 if @reload_countdown <= @arena.tick
-      @reload_countdown - @arena.tick
+      return 0 if @reload_countdown <= @arena.ticks
+      @reload_countdown - @arena.ticks
     end
     
   end

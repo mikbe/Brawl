@@ -10,7 +10,7 @@ describe Brawl::Arena do
     
     it "should start the clock automatically" do
       arena = Brawl::Arena.new(size: {width: 100, length: 100})
-      expect{sleep(0.1)}.should change(arena, :tick)
+      expect{sleep(0.1)}.should change(arena, :ticks)
     end
   end
 
@@ -146,11 +146,18 @@ describe Brawl::Arena do
 
   context "when damage occurs" do
     
-    it 'should forward damage to the damamge object' do
+    it 'should forward damage to the damaged object' do
       expect{arena.forward_damage(damage: 1, target: object1.id)}.should
         change(object1, :health).by(-1)
     end
     
   end
+
+  it "should set the clock to the given clock object" do
+    clock = Brawl::Clock.new
+    arena.set_clock clock
+    arena.clock.should == clock
+  end
+
 
 end

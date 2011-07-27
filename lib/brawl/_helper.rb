@@ -24,39 +24,35 @@ module Brawl
 
     def self.point_in_cone?(params)
 
-      # the point where the cone starts
       origin    = params[:origin]
-      # how long the cone is
       radius    = params[:radius]
-      # how wide the cone is
       angle     = params[:angle]
-      # the center angle of the cone
       direction = params[:direction]
-      # the point under test
       point     = params[:point]
 
-      x1, y1, x2, y2 = origin[:x], origin[:y], point[:x], point[:y]
-
-      # no point in continuing if the target is out of range
       distance_to_target = distance(origin, point)
       return false if distance_to_target > radius
 
-      bearing_to_target = Math.atan2(x2 - x1, y2 - y1)
+      bearing_to_target = bearing(origin, point)
 
-      min_cone_angle = to_radians((direction - (angle / 2)) % 360)
-      max_cone_angle = to_radians((direction + (angle / 2)) % 360)
+      min_cone_angle = (direction - (angle / 2)) % 360
+      max_cone_angle = (direction + (angle / 2)) % 360
 
-      # Check if the heading to the target is inside the scan angle
       greater_than = bearing_to_target >= min_cone_angle
       less_than    = bearing_to_target <= max_cone_angle
 
       if (min_cone_angle > max_cone_angle && (greater_than || less_than)) ||
-        (min_cone_angle <= max_cone_angle && (greater_than && less_than))
-        
+      (min_cone_angle <= max_cone_angle && (greater_than && less_than))
         { distance: distance_to_target.round(DECIMAL_PLACES), 
-          bearing: to_degrees(bearing_to_target)} 
+          bearing: bearing_to_target}
         
       end
+    end
+
+    def self.bearing(origin, target)
+      x1, y1, x2, y2 = origin[:x], origin[:y], target[:x], target[:y]
+      # correct mathy angles to what everyone on the face of the planet uses
+      to_degrees(Math.atan2(x2 - x1, y2 - y1)) % 360
     end
 
     def self.distance(point1, point2)

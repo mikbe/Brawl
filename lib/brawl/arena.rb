@@ -2,13 +2,14 @@ module Brawl
   
   class Arena
     
-    attr_reader :size
+    attr_reader :size, :clock
     
     def initialize(params={})
       @size     = params[:size]
       @objects  = []
-      @clock    = params[:clock] || Clock.new
-      @clock.start
+      
+      set_clock(params[:clock])
+
       add_walls
     end
 
@@ -20,8 +21,13 @@ module Brawl
       @size[:width]
     end
 
-    def tick
-      @clock.tick
+    def ticks
+      @clock.ticks
+    end
+
+    def set_clock(clock=nil)
+      @clock = clock || Clock.new
+      @clock.start
     end
 
     def add_object(object)
@@ -77,10 +83,21 @@ module Brawl
     def forward_damage(params)
       target = @objects.select{|object| object.id == params[:target]}.first
       target.damage(params[:damage])
+      end_game if victory?
     end
-    
+
+    def victory?
+      @objects.one? do |object|
+        object.class != Wall && object.health > 0
+      end
+    end
+
+    def end_game
+      @clock.stop
+    end
+
     private 
-    
+
     def add_walls
       (0...width).each do |col|
         @objects << Wall.new(location: {x: col, y: -1})

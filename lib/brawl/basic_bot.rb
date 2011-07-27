@@ -3,8 +3,7 @@ require 'uuidtools'
 
 module Brawl
   
-  class BasicBot < Brawl::BasicArenaObject
-
+  class BasicBot < BasicArenaObject
     extend Forwardable
 
     attr_reader :parts
@@ -12,8 +11,8 @@ module Brawl
     DECIMAL_PLACES = 1
 
     def initialize(params={})
-      set :arena, nil, params
-      set :parts, nil, params
+      @arena = params[:arena]
+      @parts = params[:parts]
 
       add_parts(@parts, params)
 
@@ -38,12 +37,8 @@ module Brawl
         # make sure we can fire the module's initialize method
         part_module.send :alias_method, :initialize_parts, :initialize
         extend part_module
+        initialize_parts(params)
       end
-      initialize_parts(params)
-    end
-
-    def initialize_parts(params)
-      super
     end
     
   end

@@ -5,7 +5,7 @@ describe Brawl::Clock do
   let(:clock){Brawl::Clock.new(0.01)}
 
   it "should start counting" do
-    expect{clock.start; sleep(0.05)}.should change(clock, :tick)
+    expect{clock.start; sleep(0.05)}.should change(clock, :ticks)
     clock.stop
   end
 
@@ -14,7 +14,7 @@ describe Brawl::Clock do
     sleep(0.02)
     clock.stop
     sleep(0.01)
-    expect{sleep(0.05)}.should_not change(clock, :tick)
+    expect{sleep(0.05)}.should_not change(clock, :ticks)
   end
 
   it "should increment 'tick' at the specified interval" do
@@ -22,7 +22,7 @@ describe Brawl::Clock do
     clock.start
     sleep(0.10)
     clock.stop
-    clock.tick.should be_approximately(10).within(1)
+    clock.ticks.should be_within(1.1).of(10)
   end
 
 end
