@@ -49,7 +49,7 @@ describe Brawl::BasicWeapon do
         parts: {Brawl::BasicWeapon=>{range: 50, power: 1}}
       )
       bot.shoot(45).should == 
-      enemy.properties.merge(distance:1.4, bearing:45.0)
+      enemy.properties.merge(distance:1.4, bearing:45.0, health: 1)
     end
 
     it "should return wall properites on a hit" do
@@ -86,7 +86,9 @@ describe Brawl::BasicWeapon do
         location: {x: 5.0, y: 5.0},
         parts: {Brawl::BasicWeapon=>{range: 2, power: 1}}
       )
-      bot.shoot(0).should == enemy1.properties.merge(distance:1.0, bearing:0.0)
+      bot.shoot(0).should == enemy1.properties.merge(
+        distance:1.0, bearing:0.0, health: 1
+      )
       
     end
 

@@ -15,8 +15,8 @@ describe Brawl::BattleController do
   let(:bot_code) do
     <<-CODE
     code do |bot|
-      puts
-      puts "Basic bot... meh."
+      # puts
+      # puts "Basic bot... meh."
       if rand(0) > 0.5
         bot.turn [:left,:right,:around].sample
       end
@@ -124,12 +124,13 @@ describe Brawl::BattleController do
 
       bot_data = [helpless_bot1, battle_bot1]
       battle.make_bots(bot_data)
-      puts "victory? #{battle.victory?}"
+      # puts "victory? #{battle.victory?}"
       battle.start
       until battle.victory?
         sleep(0.5)
       end
-      puts "victory? #{battle.victory?}"
+      battle.victory?.should be_true
+      # puts "victory? #{battle.victory?}"
     end
 
   end

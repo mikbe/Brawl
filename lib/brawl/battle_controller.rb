@@ -74,7 +74,6 @@ module Brawl
     end
 
     def bot_msg_callback(*params, &block)
-      puts *params.inspect
       fire_event(:bot_msg, *params, &block)
     end
 
