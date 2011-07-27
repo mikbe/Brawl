@@ -13,7 +13,7 @@ Brawl is a work in progress but currently supports running bots on your local ma
 The framework is designed from the ground up to be extendable. Want to add some new functionality to robots like dropping land mines, semi-intelligent turrets, or heat seeking missiles? Just write a new part and load it into your bot.
 
 ## Security
-Brawl was also designed to be secure (when the DRb methodology is implemented). In the secure version (in prototype stage now) bot code runs in a $SAFE = 4 process fork and communicates via a wrapper that uses DRb to talk to a proxy object on the server. 
+Brawl was also designed to be secure (when the DRb methodology is implemented). In the secure version (in prototype stage now) bot code runs in a $SAFE = 3 process fork and communicates via a wrapper that uses DRb to talk to a proxy object. 
 
 Whew, that was a mouth full but what it basically means is you can feel reasonably safe running other people's code on your machine. They won't be able to erase your hard drive, probably, much less hack your bots or the game engine to cheat.
 
