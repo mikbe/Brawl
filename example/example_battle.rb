@@ -68,6 +68,8 @@ class LogView
   def initialize(logfile)
     @logfile = logfile
     @file = nil
+    @verbosity_throttle = 0
+    @verbosity_level = 25
   end
 
   def open
@@ -79,7 +81,7 @@ class LogView
     @file.close
   end
 
-  def write(msg)
+  def write(msg="")
     @file.puts msg
   end
 
@@ -88,31 +90,52 @@ class LogView
     bot_info      = params[0]
     method        = params[1]
     method_params = params[2]
-
+    @verbosity_throttle += 1
+    
     case method
       when :damage
-        @file.puts
-        @file.puts "#{bot_info[:name]}" +
+        text = "#{bot_info[:name]}" +
         " at #{bot_info[:location]}" +
         " was hit for #{method_params} damage" +
         " and now has #{bot_info[:health]} health"
-        @file.puts "#{bot_info[:name]} is dead!" if bot_info[:health] == 0
-      when :scan
+        text += "#{bot_info[:name]} is dead!" if bot_info[:health] == 0
         @file.puts
-        @file.puts "#{bot_info[:name]}" +
+        @file.puts text
+        puts 
+        puts text
+      when :scan
+        text = "#{bot_info[:name]}" +
         " at #{bot_info[:location]}" +
         " scans #{method_params}"
-      when :move
         @file.puts
-        @file.puts "#{bot_info[:name]}" +
+        @file.puts text
+        if speak?
+          puts 
+          puts text
+        end
+       when :move
+        text = "#{bot_info[:name]}" +
         " at #{bot_info[:location]}" +
         " moves #{method_params}"
-      when :shoot
         @file.puts
-        @file.puts "#{bot_info[:name]}" +
+        @file.puts text
+        if speak?
+          puts 
+          puts text
+        end
+      when :shoot
+        text = "#{bot_info[:name]}" +
         " at #{bot_info[:location]}" +
         " shoots at bearing #{method_params.round(1)}."
+        @file.puts
+        @file.puts text
+        puts 
+        puts text
     end
+  end
+  
+  def speak?
+    @verbosity_throttle % @verbosity_level == 0
   end
 
 end
@@ -135,7 +158,12 @@ battle.start
 until battle.victory?
   sleep(0.5)
 end
-log.write "Battle won!"
+
 winner = battle.arena.get_object(class: Brawl::BasicBot)
-log.write "#{winner[:name]} is the champion!"
+
+done_text = "Battle won!\n#{winner[:name]} is the champion!"
+puts
+puts done_text
+log.write
+log.write done_text
 log.close
