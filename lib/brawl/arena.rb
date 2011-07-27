@@ -36,10 +36,11 @@ module Brawl
     
     def add_objects(objects_array)
       objects_array.collect do |object|
-        next !!(@objects << object) unless 
-          get_object(id: object.id) || 
-          ping(object.location)
-        false
+        if get_object(id: object.id) || ping(object.location)
+          false
+        else
+          !!(@objects << object)
+        end
       end
     end
 

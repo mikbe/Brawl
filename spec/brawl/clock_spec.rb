@@ -13,7 +13,7 @@ describe Brawl::Clock do
     clock.start
     sleep(0.02)
     clock.stop
-    sleep(0.01)
+    sleep(0.02)
     expect{sleep(0.05)}.should_not change(clock, :ticks)
   end
 
