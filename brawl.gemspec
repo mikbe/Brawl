@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Mike Bethany"]
   s.email       = ["mikbe.tk@gmail.com"]
   s.homepage    = "http://mikbe.tk"
-  s.summary     = %q{A work in progress}
-  s.description = %q{nothing to see here, move along}
+  s.summary     = %q{A robot combat game where you write Ruby programs to control your robots.}
+  s.description = %q{Write robotic assassins using Ruby and watch them as they do your evil bidding.}
 
   s.add_dependency "uuidtools"
   s.add_dependency "eventable"
