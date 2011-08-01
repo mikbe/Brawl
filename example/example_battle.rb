@@ -97,8 +97,8 @@ class LogView
         text = "#{bot_info[:name]}" +
         " at #{bot_info[:location]}" +
         " was hit for #{method_params} damage" +
-        " and now has #{bot_info[:health]} health"
-        text += "#{bot_info[:name]} is dead!" if bot_info[:health] == 0
+        " and now has #{bot_info[:health]} health."
+        text += " #{bot_info[:name]} is dead!" if bot_info[:health] == 0
         @file.puts
         @file.puts text
         puts 
